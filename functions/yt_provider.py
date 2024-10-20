@@ -12,7 +12,7 @@ yt_auth_uri = os.getenv("YT_AUTH_URI")
 yt_token_uri = os.getenv("YT_TOKEN_URI")
 yt_auth_provider_x509_cert_url = os.getenv("YT_AUTH_PROVIDER_X509_CERT_URL")
 yt_client_secret = os.getenv("YT_CLIENT_SECRET")
-yt_redirect_uri = os.getenv("YT_REDIRECT_URIS")
+yt_redirect_uri = os.getenv("YT_REDIRECT_URIS", "").split(",")[1]
 
 class YoutubeProvider(Provider):
     def __init__(self):
