@@ -2,6 +2,9 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from .provider import Provider
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 yt_client_id = os.getenv("YT_CLIENT_ID")
 yt_project_id = os.getenv("YT_PROJECT_ID")
@@ -11,12 +14,9 @@ yt_auth_provider_x509_cert_url = os.getenv("YT_AUTH_PROVIDER_X509_CERT_URL")
 yt_client_secret = os.getenv("YT_CLIENT_SECRET")
 yt_redirect_uri = os.getenv("YT_REDIRECT_URIS")
 
-
-
 class YoutubeProvider(Provider):
     def __init__(self):
-        scopes = ['https://www.googleapis.com/auth/youtube.readonly',
-                  'https://www.googleapis.com/auth/youtube']
+        print(f"Redirect URI: {yt_redirect_uri}")
         flow = InstalledAppFlow.from_client_config(
             {
                 "web": {
@@ -29,10 +29,13 @@ class YoutubeProvider(Provider):
                     "redirect_uris": [yt_redirect_uri],
                 }
             },
-            scopes = scopes
+            scopes =   ['https://www.googleapis.com/auth/youtube.readonly',
+                        'https://www.googleapis.com/auth/youtube']
         )
+
         credentials = flow.run_local_server(port=3000)
         self.youtube = build('youtube', 'v3', credentials=credentials)
+
 
 
     def search(self, query):

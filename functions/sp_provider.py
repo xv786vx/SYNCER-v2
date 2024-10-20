@@ -1,11 +1,18 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from .provider import Provider
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+sp_client_id = os.getenv("SP_CLIENT_ID")
+sp_client_secret = os.getenv("SP_CLIENT_SECRET")
 
 class SpotifyProvider(Provider):
-    def __init__(self, client_id, client_secret):
-        self.client_id = client_id
-        self.client_secret = client_secret
+    def __init__(self):
+        self.client_id = sp_client_id
+        self.client_secret = sp_client_secret
         self.sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
             client_id = self.client_id,       # Replace with your Client ID
             client_secret= self.client_secret,   # Replace with your Client Secret
@@ -64,7 +71,7 @@ class SpotifyProvider(Provider):
         except spotipy.exceptions.SpotifyException as e:
             return False
     
-    
+
     def create_playlist(self, user_id, playlist_name, description=""):
         playlist = self.sp.user_playlist_create(user=user_id, name=playlist_name, public=True, description=description)
         print(f"Created Spotify playlist: {playlist['name']} with ID: {playlist['id']}")
