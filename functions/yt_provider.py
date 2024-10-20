@@ -62,7 +62,29 @@ class YoutubeProvider(Provider):
                 }
         return None 
 
-
+    def get_playlist_items(self, playlist_id):
+        """get all items (videos) in playlist."""
+        playlist_items = []
+        request = self.youtube.playlistItems().list(part="snippet", playlistId=playlist_id, maxResults=25)
+    
+        while request:
+            response = request.execute()
+            
+            # Add the current batch of items to the playlist_items list
+            playlist_items.extend([
+                {
+                    'title': item['snippet']['title'],
+                    'videoId': item['snippet']['resourceId']['videoId'],
+                    'channelTitle': item['snippet']['videoOwnerChannelTitle']
+                }
+                for item in response['items']
+            ])
+            
+            # Check if there's a next page
+            request = self.youtube.playlistItems().list_next(request, response)
+    
+        return playlist_items
+    
 
     def add_to_playlist(self, playlist_id, item_id):
         request = self.youtube.playlistItems().insert(
