@@ -1,7 +1,11 @@
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+from google.oauth2.credentials import Credentials
+from google.auth.exceptions import RefreshError
+from google.auth.transport.requests import Request
 from .provider import Provider
 import os
+import json
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -14,26 +18,47 @@ yt_auth_provider_x509_cert_url = os.getenv("YT_AUTH_PROVIDER_X509_CERT_URL")
 yt_client_secret = os.getenv("YT_CLIENT_SECRET")
 yt_redirect_uri = os.getenv("YT_REDIRECT_URIS")
 
+TOKEN_FILE = "token.json"
+
 class YoutubeProvider(Provider):
     def __init__(self):
-        print(f"Redirect URI: {yt_redirect_uri}")
-        flow = InstalledAppFlow.from_client_config(
-            {
-                "web": {
-                    "client_id": yt_client_id,
-                    "project_id": yt_project_id,
-                    "auth_uri": yt_auth_uri,
-                    "token_uri": yt_token_uri,
-                    "auth_provider_x509_cert_url": yt_auth_provider_x509_cert_url,
-                    "client_secret": yt_client_secret,
-                    "redirect_uris": [yt_redirect_uri],
-                }
-            },
-            scopes =   ['https://www.googleapis.com/auth/youtube.readonly',
+        scopes =   ['https://www.googleapis.com/auth/youtube.readonly',
                         'https://www.googleapis.com/auth/youtube']
-        )
-
-        credentials = flow.run_local_server(port=3000)
+        
+        credentials = None
+        
+        # load credentials from token file if it exists
+        if os.path.exists(TOKEN_FILE):
+            credentials = Credentials.from_authorized_user_file(TOKEN_FILE, scopes=scopes)
+            if credentials and credentials.expired and credentials.refresh_token:
+                try:
+                    credentials.refresh(Request())
+                except RefreshError:
+                    print("Failed to refresh token.")
+                    credentials = None
+        
+        # if not valid credentials available, prompt user to authenticate
+        if not credentials or not credentials.valid:
+            flow = InstalledAppFlow.from_client_config(
+                {
+                    "web": {
+                        "client_id": yt_client_id,
+                        "project_id": yt_project_id,
+                        "auth_uri": yt_auth_uri,
+                        "token_uri": yt_token_uri,
+                        "auth_provider_x509_cert_url": yt_auth_provider_x509_cert_url,
+                        "client_secret": yt_client_secret,
+                        "redirect_uris": [yt_redirect_uri],
+                    }
+                },
+                scopes = scopes
+            )
+            credentials = flow.run_local_server(port=3000)
+            
+            # save credentials to token file for later use
+            with open(TOKEN_FILE, "w") as token_file:
+                token_file.write(credentials.to_json())
+        
         self.youtube = build('youtube', 'v3', credentials=credentials)
 
 
@@ -56,9 +81,9 @@ class YoutubeProvider(Provider):
     def get_playlist_by_name(self, playlist_name):
         playlists = self.get_playlists()
         for pl in playlists:
-            if pl['name'].lower() == playlist_name.lower():  # Case-insensitive comparison
+            if pl['title'].lower() == playlist_name.lower():  # Case-insensitive comparison
                 return {
-                    'name': pl['name'],
+                    'title': pl['title'],
                     'id': pl['id'],
                     'description': pl['description'],
                     'thumbnail': pl['thumbnail']

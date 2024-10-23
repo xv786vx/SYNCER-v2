@@ -5,3 +5,10 @@
 # venv
 .venv/
 env/
+
+# pycache folders + .pyc files (a bit redundant but wtv)
+**/__pycache__/
+*.pyc
+
+# token file for YouTube API credentials
+token.json
