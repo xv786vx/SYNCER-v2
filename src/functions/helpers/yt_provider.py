@@ -75,7 +75,14 @@ class YoutubeProvider(Provider):
     def get_playlists(self):
         request = self.youtube.playlists().list(part="snippet", mine=True)
         response = request.execute()
-        return [(pl['snippet']['title'], pl['id']) for pl in response.get("items", [])]
+        return [
+            {
+                'title': pl['snippet']['title'],
+                'id': pl['id'],
+                'description': pl['snippet'].get('description', ""),
+                'thumbnail': pl['snippet']['thumbnails']['default']['url']
+            }
+            for pl in response.get("items", [])]
     
 
     def get_playlist_by_name(self, playlist_name):
@@ -85,8 +92,8 @@ class YoutubeProvider(Provider):
                 return {
                     'title': pl['title'],
                     'id': pl['id'],
-                    'description': pl['description'],
-                    'thumbnail': pl['thumbnail']
+                    'description': pl['description', ''],
+                    'thumbnail': pl.get('thumbnail', None)
                 }
         return None 
 

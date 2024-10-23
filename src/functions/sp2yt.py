@@ -9,7 +9,7 @@ spp = SpotifyProvider()
 print("welcome to Syncer!")
 # for item in spp.get_playlists(): # 1. retrieve spotify playlists
 #     print(f"Playlist Name: {item[0]}, Playlist ID: {item[1]}")
-playlist_to_modify = input("(Step 1) Choose a playlist to sync from: ")
+playlist_to_modify = input("(Step 1) Choose a SPOTIFY playlist to sync from: ")
 
 # 2. get information about the playlist
 print(spp.get_playlist_by_name(playlist_to_modify)['name'])
