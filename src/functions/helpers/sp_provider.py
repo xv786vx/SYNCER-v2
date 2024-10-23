@@ -60,7 +60,18 @@ class SpotifyProvider(Provider):
 
     def get_playlist_items(self, playlist_id):
         playlist_items = self.sp.playlist_tracks(playlist_id)
-        return playlist_items['items']
+        tracks_info = []
+        for item in playlist_items['items']:
+            track = item['track']
+            track_name = track['name']
+            artists = ', '.join([artist['name'] for artist in track['artists']])
+            
+            tracks_info.append({
+                'title': track_name,
+                'artist': artists,
+            })
+        
+        return tracks_info
 
 
     def add_to_playlist(self, playlist_id, track_uri):

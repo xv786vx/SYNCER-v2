@@ -63,11 +63,18 @@ class YoutubeProvider(Provider):
 
 
 
-    def search(self, query):
-        request = self.youtube.search().list(q=query, part="snippet", type="video", maxResults=1)
+    def search(self, song_title, artists):
+        query = f"{song_title} {artists}"
+        request = self.youtube.search().list(q=query, part="snippet", type="video", maxResults=10)
         response = request.execute()
         if response['items']:
-            return response['items'][0]['id']['videoId']
+            for item in response['items']:
+                video_title = item['snippet']['title'].lower()
+                video_description = item['snippet']['description'].lower()
+                
+                # check if the video title or description contains the song title
+                if (song_title.lower() in video_title or video_description) and (artists.lower() in video_title or video_description):
+                    return item['id']['videoId']
         else:
             return None
     
