@@ -80,7 +80,7 @@ class YoutubeProvider(Provider):
                 'title': pl['snippet']['title'],
                 'id': pl['id'],
                 'description': pl['snippet'].get('description', ""),
-                'thumbnail': pl['snippet']['thumbnails']['default']['url']
+                'image': pl['snippet']['thumbnails']['default']['url']
             }
             for pl in response.get("items", [])]
     
@@ -92,7 +92,7 @@ class YoutubeProvider(Provider):
                 return {
                     'title': pl['title'],
                     'id': pl['id'],
-                    'description': pl['description', ''],
+                    'description': pl.get('description', ''),
                     'thumbnail': pl.get('thumbnail', None)
                 }
         return None 

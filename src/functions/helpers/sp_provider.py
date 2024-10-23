@@ -50,10 +50,10 @@ class SpotifyProvider(Provider):
         for pl in playlists['items']:
             if pl['name'].lower() == playlist_name.lower():  # Case-insensitive comparison
                 return {
-                    'name': pl['name'],
+                    'title': pl['name'],
                     'id': pl['id'],
-                    'uri': pl['uri'],
-                    'image': pl['images'][0]['url'] if pl.get('images') else 'No Image'
+                    'image': pl['images'][0]['url'] if pl.get('images') else 'No Image',
+                    'uri': pl['uri']
                 }
         return None  # Return None if playlist not found
     

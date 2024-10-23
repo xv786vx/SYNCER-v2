@@ -1,5 +1,5 @@
-from functions.helpers.sp_provider import SpotifyProvider
-from functions.helpers.yt_provider import YoutubeProvider
+from helpers.sp_provider import SpotifyProvider
+from helpers.yt_provider import YoutubeProvider
 
 yt = YoutubeProvider()
 spp = SpotifyProvider()
@@ -12,12 +12,16 @@ print("welcome to Syncer!")
 playlist_to_modify = input("(Step 1) Choose a SPOTIFY playlist to sync from: ")
 
 # 2. get information about the playlist
-print(spp.get_playlist_by_name(playlist_to_modify)['name'])
+pl_info = spp.get_playlist_by_name(playlist_to_modify)
+print(f"SPOTIFY playlist chosen: {pl_info['title']}")
 
 # 3. check if same playlist exists in youtube, if not then make it
+print(f"Checking if {pl_info['title']} exists in YouTube account...")
 if yt.get_playlist_by_name(playlist_to_modify) is None:
     print(f"Playlist {playlist_to_modify} not found in YouTube, creating it now...")
     yt.create_playlist(playlist_to_modify)
 
 # for item in spp.get_playlist_items(playlist_to_modify):
-    
+print("(Step 2) Syncing playlist...")
+print(pl_info["id"])
+
