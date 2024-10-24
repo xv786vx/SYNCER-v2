@@ -25,7 +25,18 @@ class SpotifyProvider(Provider):
         query = f"{track_name} {artists}"
 
         results = self.sp.search(q=query, limit=1, type='track')
-        print(f"results! {results['tracks']['items']}")
+        print(f"track p1: {results['tracks']}")
+        print("")
+        print(f"track p2: {results['tracks']['items']}")
+        print("")
+        print(f"track p3: {results['tracks']['items'][0]}")
+        print("")
+        print(f"track name: {results['tracks']['items'][0]['name']}")
+        print("")
+        print(f"artist name: {results['tracks']['items'][0]['artists'][0]['name']}")
+        print("")
+        print(f"track uri: {results['tracks']['items'][0]['uri']}")
+        print("")
         if results['tracks']['items']:
             for track in results['tracks']['items']:
                 song_title = track['name'].lower()
@@ -84,7 +95,7 @@ class SpotifyProvider(Provider):
         
         """Add track to playlist."""
         try:
-            self.sp.playlist_add_items(playlist_id, [track_uri])
+            self.sp.playlist_add_items(playlist_id, track_uri)
             return True
         except spotipy.exceptions.SpotifyException as e:
             return False
@@ -98,3 +109,4 @@ class SpotifyProvider(Provider):
         )
         print(f"Created Spotify playlist: {playlist['name']} with ID: {playlist['id']}")
         return playlist
+# %%

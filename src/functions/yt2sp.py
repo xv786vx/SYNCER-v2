@@ -23,10 +23,17 @@ if sp.get_playlist_by_name(playlist_to_modify) is None:
 print(f"(Step 2) Syncing {pl_info['title']}, {pl_info['id']} to Spotify...")
 tracks_to_sync = yt.get_playlist_items(pl_info['id'])
 
-for track in tracks_to_sync:
-    song = track['title']
-    # print(f"song: {song}")
-    artists = track['artist']
-    # print(f"artists: {artists}")
-    print(f"Track URI: {sp.search(song, artists)}")
-    sp.add_to_playlist(sp.get_playlist_by_name(pl_info['title'])['id'], sp.search(song, artists))
+result = sp.search("Hello", "Adele")
+# print(f"track p1: {result['tracks']}")
+# print(f"track p2: {result['tracks']['items']}")
+# print(f"track p3: {result['tracks']['items'][0]}")
+# print(f"track name: {result['name']}")
+# print(f"artist name: {result['artists'][0]['name']}")
+# print(f"track uri: {result['uri']}")
+# for track in tracks_to_sync:
+#     song = track['title']
+#     # print(f"song: {song}")
+#     artists = track['artist']
+#     # print(f"artists: {artists}")
+#     print(f"Track URI: {sp.search(song, artists)}")
+#     sp.add_to_playlist(sp.get_playlist_by_name(pl_info['title'])['id'], sp.search(song, artists))
