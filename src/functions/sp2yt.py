@@ -7,8 +7,6 @@ sp = SpotifyProvider()
 # intro sequence
 
 print("welcome to Syncer!")
-# for item in spp.get_playlists(): # 1. retrieve spotify playlists
-#     print(f"Playlist Name: {item[0]}, Playlist ID: {item[1]}")
 playlist_to_modify = input("(Step 1) Choose a SPOTIFY playlist to sync from: ")
 
 # 2. get information about the playlist
@@ -29,4 +27,3 @@ for track in tracks_to_sync:
     song = track['title']
     artists = track['artist']
     yt.add_to_playlist(yt.get_playlist_by_name(pl_info['title'])['id'], yt.search(song, artists))
-

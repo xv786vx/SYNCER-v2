@@ -14,5 +14,5 @@ env/
 token.json
 
 # spotify .cache that contains token 
-/.cache/
-.cache
+*.cache
+

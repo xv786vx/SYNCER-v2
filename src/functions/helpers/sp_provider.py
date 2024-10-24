@@ -21,12 +21,17 @@ class SpotifyProvider(Provider):
         ))
 
 
-    def search(self, track_name):
-        """Search for a track by name."""
-        results = self.sp.search(q=track_name, limit=1, type='track')
+    def search(self, track_name, artists):
+        query = f"{track_name} {artists}"
+
+        results = self.sp.search(q=query, limit=7, type='track')
         if results['tracks']['items']:
-            track_uri = results['tracks']['items'][0]['uri']
-            return track_uri
+            for track in results['tracks']['items']:
+                song_title = track['name'].lower()
+                artist_names = [artist['name'].lower() for artist in track['artists']]
+                
+                if song_title == track_name.lower() and any(artist.lower() in artist_names for artist in artists.split()):
+                    return track['uri']
         else:
             return None
     
@@ -52,8 +57,8 @@ class SpotifyProvider(Provider):
                 return {
                     'title': pl['name'],
                     'id': pl['id'],
+                    'description': pl.get('description', ''),
                     'image': pl['images'][0]['url'] if pl.get('images') else 'No Image',
-                    'uri': pl['uri']
                 }
         return None  # Return None if playlist not found
     
@@ -75,6 +80,7 @@ class SpotifyProvider(Provider):
 
 
     def add_to_playlist(self, playlist_id, track_uri):
+        
         """Add track to playlist."""
         try:
             self.sp.playlist_add_items(playlist_id, [track_uri])
@@ -83,7 +89,11 @@ class SpotifyProvider(Provider):
             return False
     
 
-    def create_playlist(self, user_id, playlist_name, description=""):
-        playlist = self.sp.user_playlist_create(user=user_id, name=playlist_name, public=True, description=description)
+    def create_playlist(self, playlist_name):
+        playlist = self.sp.user_playlist_create(
+            user=self.sp.current_user()['id'], 
+            name=playlist_name, public=True, 
+            description="made with SYNCER!"
+        )
         print(f"Created Spotify playlist: {playlist['name']} with ID: {playlist['id']}")
         return playlist

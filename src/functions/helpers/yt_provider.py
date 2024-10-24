@@ -65,7 +65,7 @@ class YoutubeProvider(Provider):
 
     def search(self, song_title, artists):
         query = f"{song_title} {artists}"
-        request = self.youtube.search().list(q=query, part="snippet", type="video", maxResults=10)
+        request = self.youtube.search().list(q=query, part="snippet", type="video", maxResults=7)
         response = request.execute()
         if response['items']:
             for item in response['items']:
@@ -100,7 +100,7 @@ class YoutubeProvider(Provider):
                     'title': pl['title'],
                     'id': pl['id'],
                     'description': pl.get('description', ''),
-                    'thumbnail': pl.get('thumbnail', None)
+                    'image': pl.get('thumbnail', None),
                 }
         return None 
 
@@ -116,8 +116,8 @@ class YoutubeProvider(Provider):
             playlist_items.extend([
                 {
                     'title': item['snippet']['title'],
-                    'videoId': item['snippet']['resourceId']['videoId'],
-                    'channelTitle': item['snippet']['videoOwnerChannelTitle']
+                    # 'videoId': item['snippet']['resourceId']['videoId'],
+                    'artist': item['snippet']['videoOwnerChannelTitle']
                 }
                 for item in response['items']
             ])
@@ -143,13 +143,13 @@ class YoutubeProvider(Provider):
         )
         request.execute()
     
-    def create_playlist(self, playlist_name, description=""):
+    def create_playlist(self, playlist_name):
         request = self.youtube.playlists().insert(
             part="snippet,status",
             body={
                 "snippet": {
                     "title": playlist_name,
-                    "description": description
+                    "description": "made with SYNCER!"
                 },
                 "status": {
                     "privacyStatus": "public"  # can be "private" or "unlisted"
