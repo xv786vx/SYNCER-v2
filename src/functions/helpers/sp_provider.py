@@ -3,6 +3,8 @@ from spotipy.oauth2 import SpotifyOAuth
 from .provider import Provider
 import os
 from dotenv import load_dotenv
+from fuzzywuzzy import fuzz
+import re
 
 load_dotenv()
 
@@ -24,27 +26,56 @@ class SpotifyProvider(Provider):
     def search(self, track_name, artists):
         query = f"{track_name} {artists}"
 
-        results = self.sp.search(q=query, limit=1, type='track')
-        print(f"track p1: {results['tracks']}")
-        print("")
-        print(f"track p2: {results['tracks']['items']}")
-        print("")
-        print(f"track p3: {results['tracks']['items'][0]}")
-        print("")
-        print(f"track name: {results['tracks']['items'][0]['name']}")
-        print("")
-        print(f"artist name: {results['tracks']['items'][0]['artists'][0]['name']}")
-        print("")
-        print(f"track uri: {results['tracks']['items'][0]['uri']}")
-        print("")
+        results = self.sp.search(q=query, limit=5, type='track')
         if results['tracks']['items']:
             for track in results['tracks']['items']:
                 song_title = track['name'].lower()
                 artist_names = [artist['name'].lower() for artist in track['artists']]
+                print(f"song title (sp): {song_title}, song title (yt): {track_name.lower()}")
+                print(f"artist names (sp): {artist_names}, artist names (yt): {artists}")
+
+                print((song_title in track_name.lower() or track_name.lower() in song_title))
+                print(any(track_name.lower() in artist_name or artist_name in track_name.lower() for artist_name in artist_names))
                 
-                if song_title == track_name.lower() and any(artist.lower() in artist_names for artist in artists.split()):
+                
+                if (song_title in track_name.lower() or track_name.lower() in song_title) and (any(artist_name in artists.lower() or artists.lower() in artist_name for artist_name in artist_names) or 
+                                                                                               any(track_name.lower() in artist_name or artist_name in track_name.lower() for artist_name in artist_names)):
+                    print(track['uri'])
                     return track['uri']
+                else:
+                    print("err: no match found")
         else:
+            print("err: result didn't match given structure")
+            return None
+        
+    def searchv2(self, track_name, artists):
+        
+        # clean inputs
+        track_name = clean_str(track_name)
+        artists = clean_str(artists)
+        
+        query = f"{track_name} {artists}"
+
+        results = self.sp.search(q=query, limit=5, type='track')
+        if results['tracks']['items']:
+            for track in results['tracks']['items']:
+                song_title = clean_str(track['name'])
+                artist_names = [clean_str(artist['name']) for artist in track['artists']]
+                
+                
+                track_names_match = fuzzy_match(song_title, track_name)
+                
+                
+                artist_match = (any(fuzzy_match(artist_name, artists) for artist_name in artist_names) or 
+                any(artist_name in track_name or track_name in artist_name for artist_name in artist_names))
+                
+                
+                if track_names_match and artist_match:
+                    return track['uri']
+                else:
+                    print("err: no match found")
+        else:
+            print("err: result didn't match given structure")
             return None
     
 
@@ -96,8 +127,10 @@ class SpotifyProvider(Provider):
         """Add track to playlist."""
         try:
             self.sp.playlist_add_items(playlist_id, track_uri)
+            print('sigma')
             return True
         except spotipy.exceptions.SpotifyException as e:
+            print('ligma')
             return False
     
 
@@ -109,4 +142,11 @@ class SpotifyProvider(Provider):
         )
         print(f"Created Spotify playlist: {playlist['name']} with ID: {playlist['id']}")
         return playlist
-# %%
+
+
+# HELPER FUNCTIONS FOR IMPROVING SPOTIFY SEARCH CAPABILITIES
+def fuzzy_match(str1, str2):
+    return fuzz.ratio(str1, str2) > 65 or (str1 in str2 or str2 in str1)
+
+def clean_str(s):
+    return re.sub(r'[^a-zA-Z0-9\s]', '', s).strip().lower()

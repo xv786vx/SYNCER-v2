@@ -21,19 +21,13 @@ if sp.get_playlist_by_name(playlist_to_modify) is None:
     
 # 4. Add each song from youtube to spotify playlist
 print(f"(Step 2) Syncing {pl_info['title']}, {pl_info['id']} to Spotify...")
-tracks_to_sync = yt.get_playlist_items(pl_info['id'])
+t_to_sync_yt = yt.get_playlist_items(pl_info['id'])
 
-result = sp.search("Hello", "Adele")
-# print(f"track p1: {result['tracks']}")
-# print(f"track p2: {result['tracks']['items']}")
-# print(f"track p3: {result['tracks']['items'][0]}")
-# print(f"track name: {result['name']}")
-# print(f"artist name: {result['artists'][0]['name']}")
-# print(f"track uri: {result['uri']}")
-# for track in tracks_to_sync:
-#     song = track['title']
-#     # print(f"song: {song}")
-#     artists = track['artist']
-#     # print(f"artists: {artists}")
-#     print(f"Track URI: {sp.search(song, artists)}")
-#     sp.add_to_playlist(sp.get_playlist_by_name(pl_info['title'])['id'], sp.search(song, artists))
+t_to_sync_sp = []
+for track in t_to_sync_yt:
+    song = track['title']
+    artists = track['artist']
+    print(f"Track URI added to list: {sp.searchv2(song, artists)}...")
+    t_to_sync_sp.append(sp.searchv2(song, artists))
+
+sp.add_to_playlist(sp.get_playlist_by_name(pl_info['title'])['id'], t_to_sync_sp)
