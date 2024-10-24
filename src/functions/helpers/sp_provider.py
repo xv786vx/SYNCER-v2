@@ -24,7 +24,8 @@ class SpotifyProvider(Provider):
     def search(self, track_name, artists):
         query = f"{track_name} {artists}"
 
-        results = self.sp.search(q=query, limit=7, type='track')
+        results = self.sp.search(q=query, limit=1, type='track')
+        print(f"results! {results['tracks']['items']}")
         if results['tracks']['items']:
             for track in results['tracks']['items']:
                 song_title = track['name'].lower()

@@ -25,6 +25,8 @@ tracks_to_sync = yt.get_playlist_items(pl_info['id'])
 
 for track in tracks_to_sync:
     song = track['title']
+    # print(f"song: {song}")
     artists = track['artist']
+    # print(f"artists: {artists}")
     print(f"Track URI: {sp.search(song, artists)}")
     sp.add_to_playlist(sp.get_playlist_by_name(pl_info['title'])['id'], sp.search(song, artists))
