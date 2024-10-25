@@ -146,7 +146,9 @@ class SpotifyProvider(Provider):
 
 # HELPER FUNCTIONS FOR IMPROVING SPOTIFY SEARCH CAPABILITIES
 def fuzzy_match(str1, str2):
-    return fuzz.ratio(str1, str2) > 65 or (str1 in str2 or str2 in str1)
+    token_similarity = fuzz.token_set_ratio(str1, str2)
+    print(token_similarity)
+    return token_similarity > 25 or (str1 in str2 or str2 in str1)
 
 def clean_str(s):
     return re.sub(r'[^a-zA-Z0-9\s]', '', s).strip().lower()
