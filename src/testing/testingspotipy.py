@@ -1,22 +1,131 @@
-# from functions.helpers.sp_provider import SpotifyProvider
+from functions.helpers.sp_provider import SpotifyProvider
 
-# sp = SpotifyProvider()
+sp = SpotifyProvider()
 
-# track_name = "Hello"
-# artists = "Adele"
+track_name = "smokepurpp x murda beatz 123 official video"
+artists = "lyrical lemonade"
 
-# results = sp.search(track_name, artists)
+results = sp.search_auto(track_name, artists)
+
+# spotify:track:3lLT1GM0h5bJXv0lToc4zw
 
 
 
-test = ['spotify:track:4lMQn7MujQTYXjN3g3xDP0', 'spotify:track:6mapJIPnQ23RTAevUoE0DL', 'spotify:track:5PTG6rrL6EPFD9E2QMI2pl', 'spotify:track:5uEYRdEIh9Bo4fpjDd4Na9', 'spotify:track:1Ser4X0TKttOvo8bgdytTP', 'spotify:track:32lItqlMi4LBhb4k0BaSaC', 'spotify:track:1GXABqvCDvQ58wPbkNhhzh', 'spotify:track:3a1lNhkSLSkpJE4MSHpDu9', 'spotify:track:7sO5G9EABYOXQKNPNiE9NR', 'spotify:track:0JP9xo3adEtGSdUEISiszL', 'spotify:track:3ee8Jmje8o58CHK66QrVC2', 'spotify:track:0TBgMKD86t1VP3IzhxCoUl', 'spotify:track:5c9VHlNEv9sQhAfTwXp5Ml', 'spotify:track:6M0IsaUX4GNyto4niSegfI', 'spotify:track:2u7mxWSeoqTXndK5e08jMp', 'spotify:track:2UVbBKQOdFAekPTRsnkzcf', 'spotify:track:1XRgIKC5TPwo7nWGyKqgG0', 'spotify:track:5gQcxYXqnofyocKgEbGYKt', 'spotify:track:7o1RFIJYqa7tsbZ79LRR3n', 'spotify:track:2Vo3sVSCltAaYU1u0f9ASz', 'spotify:track:63DDy2WpYgeSXoL3duQLSy', 'spotify:track:6PGoSes0D9eUDeeAafB2As', 'spotify:track:68Dni7IE4VyPkTOH9mRWHr', 'spotify:track:4scpF6J5uMBvoh6sFB7EL1', 'spotify:track:1QRJb5VY3sIkCKcTuIKCrk', 'spotify:track:6n4U3TlzUGhdSFbUUhTvLP', 'spotify:track:7165YDcOpr9yEypbdpU6fa', 'spotify:track:6eT7xZZlB2mwyzJ2sUKG6w', 'spotify:track:5yuShbu70mtHXY0yLzCQLQ', 'spotify:track:3ZhTT6yjZwpPph5MIJ53XY', 'spotify:track:0FZ4Dmg8jJJAPJnvBIzD9z', 'spotify:track:3J8Q6aBhjpvao8BsBQ6H9Y', 'spotify:track:6DCZcSspjsKoFjzjrWoCdn', 'spotify:track:0VgkVdmE4gld66l8iyGjgx', 'spotify:track:7gwLQ4tZ5UdZ7qNcDyJ8wr', 'spotify:track:4vaxvNDaLSoD36iZX515ug', 'spotify:track:4Q3N4Ct4zCuIHuZ65E3BD4', 'spotify:track:5NQbUaeTEOGdD6hHcre0dZ', 'spotify:track:7m9OqQk4RVRkw9JJdeAw96', 'spotify:track:4w552MI4k7dwPHLjI8YOBy', 'spotify:track:6aQzok2i9onyg7piIm63pF', 'spotify:track:7oJrVhiTPZGBXWPwhxjy9S', 'spotify:track:3j84U36KvLeXNDPv4t5pI8', 'spotify:track:22OczrqroYBzplwHVivYrh', 'spotify:track:2d8JP84HNLKhmd6IYOoupQ', 'spotify:track:5Z3GHaZ6ec9bsiI5BenrbY', 'spotify:track:6dbSBQXCctYSVryynHXaZ4', 'spotify:track:75ZvA4QfFiZvzhj2xkaWAh', 'spotify:track:6fwdbPMwP1zVStm8FybmkO', 'spotify:track:0wbnC9AUenxp613TYaJsGK', 'spotify:track:7fBv7CLKzipRk6EC6TWHOB', 'spotify:track:5eqK0tbzUPo2SoeZsov04s', 'spotify:track:2PDoD69oMLWdi3iPGjN2DW', 'spotify:track:3wdfLVUhmX64lIyWIIEW8s', 'spotify:track:2EEeOnHehOozLq4aS0n6SL', 'spotify:track:152lZdxL1OR0ZMW6KquMif', 'spotify:track:2L8cFPItBljPNJgPjTnuIf', 'spotify:track:4odAJ4IxmYzy3co4TeYP24', 'spotify:track:3muBQDekYAg7jm6hDu6R0Z', 'spotify:track:3GVkPk8mqxz0itaAriG1L7', 'spotify:track:7GX5flRQZVHRAGd6B4TmDO', 'spotify:track:7FYH5AW3bVfZHJIQpq3UOA', 'spotify:track:51rXHuKN8Loc4sUlKPODgH', 'spotify:track:7ms3VzLTfr7fXNOqA4Mkx9', 'spotify:track:0e7ipj03S05BNilyu5bRzt', 'spotify:track:4gmmRb6bZJffOOiww1JGTO', 'spotify:track:7floNISpH8VF4z4459Qo18', 'spotify:track:6Y1bQK33IcUohKVSzBd0Ud', 'spotify:track:5tz69p7tJuGPeMGwNTxYuV', 'spotify:track:16i3H5whsxhyLCBwceuR4j', 'spotify:track:43ZyHQITOjhciSUUNPVRHc', 'spotify:track:2HBtd9MYDd2xDVu8Zc6pwt', 'spotify:track:4RIl218uURN8ba6Xd6Te4n', 'spotify:track:2RUuKIHFHjk41E7YsJ9HNP', 'spotify:track:7dt6x5M1jzdTEt8oCbisTK', 'spotify:track:21EuXngYQnp6aFKKAsw8Ai', 'spotify:track:3OnOomd79OjqSYHchCQ6ht', 'spotify:track:4a87wpeqAcOv03pYihEzku', 'spotify:track:1EaKU4dMbesXXd3BrLCtYG', 'spotify:track:7uzmGiiJyRfuViKKK3lVmR', 'spotify:track:01TnVDiet1DFTsyWKUKovl', 'spotify:track:7oJrVhiTPZGBXWPwhxjy9S', 'spotify:track:7yt6eiZQCkVFEzwGp4Pbor', 'spotify:track:2qT1uLXPVPzGgFOx4jtEuo', 'spotify:track:40LaNujg5lvImKt0N4xDge', 'spotify:track:3wGXyJGsCf1myH5MooQIqE', 'spotify:track:0bkQYlNsqsV19VTaKQWego', 'spotify:track:3pndPhlQWjuSoXhcIIdBjv', 'spotify:track:5PIfH6BzcmH04RDmtzF0BN', 'spotify:track:74tYjkmVk06hYJzzzskWa0', 'spotify:track:5ZcgtIzjjlNiPflHkuodRv', 'spotify:track:0B8QzDH7YWih85V5SEMnyJ', 'spotify:track:57IRaiAB4hBZu3gnNVZC0v', 'spotify:track:4XkOcWt0C2JX1s2RXybosk', 'spotify:track:1f5cbQtDrykjarZVrShaDI', 'spotify:track:5hCJOilpZlh8xMV6BsWMgG', 'spotify:track:3eckZuNR6YN1TNfsI38Jkv', 'spotify:track:3CA9pLiwRIGtUBiMjbZmRw', 'spotify:track:0mfRU77HQ3xx4AaqrSom7m', 'spotify:track:3DNnHHuFIugVJSi8PgYmkf', 'spotify:track:7CEJH5Ed7FBbXF6CqBQPlJ', 'spotify:track:5IaHrVsrferBYDm0bDyABy', 'spotify:track:5w7wuzMzsDer96KqxafeRK', 'spotify:track:53VkV6QK8RXp00jeyyTNQH', 'spotify:track:658I1uDnmLSiltFCf98AWE', 'spotify:track:3qN5qMTKyEEmiTZD38BNTT', 'spotify:track:0FZ4Dmg8jJJAPJnvBIzD9z', 'spotify:track:6vN77lE9LK6HP2DewaN6HZ', 'spotify:track:6ihzpb4wOYkZut6iEC1MHE', 'spotify:track:2YVt7k1qZXFhzYDe8FMDW6', 'spotify:track:22An65gG31JLf9n18qjdhZ', 'spotify:track:3to5UxKsozb4T6CfwHuhLJ', 'spotify:track:08kB9HSfrcIi83rymwgjMz', 'spotify:track:1YTj761KxNITz9ftxBe95v', 'spotify:track:3icfKCl7xj13dsH7pxmY9b', 'spotify:track:794QVQtFNy7hvtjQP1keQd', 'spotify:track:1BuZAIO8WZpavWVbbq3Lci', 'spotify:track:2PCKWNZYcwyFKd4lVRWE8k', 'spotify:track:6Gg25EZRbQd4IHiJz2KSY0', 'spotify:track:6c4GHUYS2PiiZ02M2Qil2q', 'spotify:track:0jA1TL7Luf9UHofMIU39ZE', 'spotify:track:0dbTQYW3Ad1FTzIA9t90E8', 'spotify:track:7rY1py6YVjgxYPYTi5z460', 'spotify:track:5cEbtwig1FXW8RF6FSxRU1', 'spotify:track:0sVcnEo2jnUnr3p7uVDZ9o', 'spotify:track:5Cg98kiDYtCEHmjcKD0CJD', 'spotify:track:7qeWNGBqqagdwf4KnjRzGZ', 'spotify:track:4WQUJuMJ4R9QDikB88wST6', 'spotify:track:0xUvi7wldroBzaZCengPa5', 'spotify:track:2nEPEOGQEYEVjRmkXUAWRB', 'spotify:track:0GHe86KhGG67dfqGXcDPwI', 'spotify:track:1VJw9q9T994bRUTWXmA7rM', 'spotify:track:376bXpxgSDqX4VBEwnwPTT', 'spotify:track:5zEeiQbazUWskpZNhnh6i2', 'spotify:track:1NAR2XeNMp6SegDBp0NlRy', 'spotify:track:6V7g6qM8wheMivMWrzbPTM', 'spotify:track:3a5HpOCxk3KmVd3vX7iNLw', 'spotify:track:7zLYKWcXnYeHHWidalz7rj', 'spotify:track:55WLWX71YkHt2tSucNIf1g', 'spotify:track:7lAK3oHbfEnvUQWosrMMpR', 'spotify:track:6fhnenGUf7siyZK3twLRuc', 'spotify:track:54zpM31KccczWZ6GYJ7P7W', 'spotify:track:5GpAhJpbHvUi6gY6RG15Ze', 'spotify:track:4uax9U22ZAdqUxTMF1beUf', 'spotify:track:1ThmUihH9dF8EV08ku5AXN', 'spotify:track:0Fpen1PTuEnCmOJtUU9Iud', 'spotify:track:0TlLq3lA83rQOYtrqBqSct', 'spotify:track:4IWGnyOHDrVZEtPWfs4s7q', 'spotify:track:0nhVrTiCGiGRCoZOJiWzm1', 'spotify:track:0chpIFSjgfd1CPrAxM7PWp', 'spotify:track:7BA7DeWLj4FNFgY22z4TXo', 'spotify:track:30z4LVkScpeNhwHFIB8Ewa', 'spotify:track:5EIIvtMRH9qyf5wIyEfT8l', 'spotify:track:2jGEiQ3otr4CPIeBgefjRA', 'spotify:track:5TVirkSwFEXF1nLJEebe2I', 'spotify:track:6LtiYg9rZXcqeonqFnGrQx', 'spotify:track:3muBQDekYAg7jm6hDu6R0Z', 'spotify:track:5qHirGR7M9tdm6C17DlzSY', 'spotify:track:5nzhL67GpF9szXWg5y509A', 'spotify:track:78QR3Wp35dqAhFEc2qAGjE', 'spotify:track:5wujBwqG7INdStqGd4tRMX', 'spotify:track:2VdT56BGpdqNHUgOe1j5vc', 'spotify:track:3KkXRkHbMCARz0aVfEt68P', 'spotify:track:2CEXhYY4cGmjyTyZJw7Wo0', 'spotify:track:5YAP8zpqj1eIX88makBjDe', 'spotify:track:5tSZQ8P8kXckFxtIrjgey1', 'spotify:track:59J5nzL1KniFHnU120dQzt', 'spotify:track:2BJSMvOGABRxokHKB0OI8i', 'spotify:track:0aMiATaLkj7ffT4W9Ng0TM', 'spotify:track:1rBjexQsgqXpsS2BrCxaDX', 'spotify:track:2qGfZAgDe1pV2y5xJAhi6R', 'spotify:track:67KvputYgCRghvDQYj5FMq', 'spotify:track:3lb5fWSG2p7x8ik8HN9oFR', 'spotify:track:7sPMfN5b0ZssJ3E7IlNrgl', 'spotify:track:2umdwsJRuFHBRw8TCQmYbq', 'spotify:track:3CArFtrkJzWkxgjmX7ki9N', 'spotify:track:3clpchqQ6A3p8jjPgKdhk0', 'spotify:track:6eKWSrZfzd25TYYxkscWgg', 'spotify:track:0QIjsbm2fh1cJ45XO9eGqq', 'spotify:track:1EmUhxPNseXs3do7aYG3pP', 'spotify:track:4w552MI4k7dwPHLjI8YOBy', 'spotify:track:577YBGuskWkVDCxZrLRB4v', 'spotify:track:4dqkKnzOJ3fWduqKcHi374', 'spotify:track:1JGaV39uhSQd2eAteOxFlF', 'spotify:track:3A1BaBGT3HgzuDrV9pgX9v', 'spotify:track:7HdNB8nvJOBwHa8hIkzvxp', 'spotify:track:68PD93zd4LzpxMWDxs5ugh', 'spotify:track:4rgwri7LajWVZvdj2N81SS', 'spotify:track:0jAfdqv18goRTUxm3ilRjb', 'spotify:track:469SyczaujLUf3M9dsPPf1', 'spotify:track:3nKRYKbGxhzv4BbwlLOcWU', 'spotify:track:3yNVfRQlUPViUh8O2V9SQn', 'spotify:track:613XukqiIPFlQX8HAgfroX', 'spotify:track:0AluA5RNsa4Cx6XRhf2hWZ', 'spotify:track:07SwlTHo3QceG4MoHoOfHu', 'spotify:track:11p2ty4w5GpoFL4vcK0Cru', 'spotify:track:1fewSx2d5KIZ04wsooEBOz', 'spotify:track:2ZRo7axmMPeSVUvDbGkJah', 'spotify:track:3i5h463CsDCWV13a25RgEO', 'spotify:track:1iZg40RiFZNlX52QDlf9oz', 'spotify:track:2JvzF1RMd7lE3KmFlsyZD8', 'spotify:track:5hwUsRKvnO5yThjVrxHQVt', 'spotify:track:2IRZnDFmlqMuOrYOLnZZyc', 'spotify:track:4dqkKnzOJ3fWduqKcHi374', 'spotify:track:1wJRveJZLSb1rjhnUHQiv6', 'spotify:track:7kMUvNpU8Tfdz8HNXNDTev', 'spotify:track:14zHNYHj7DvIs4IbaMVmZ4', 'spotify:track:0Qd2KYCmwGYiTF3A0opS6b', 'spotify:track:5lyQT8byPFFBHk1cvHVA9g', 'spotify:track:1oHNvJVbFkexQc0BpQp7Y4', 'spotify:track:3bNUjHhkHYXATrWz5uJtIs', 'spotify:track:0hwkukpHcBJfGcIUxi1tK2', 'spotify:track:7oBW80497A8axagr4aC9U6', 'spotify:track:1rBjexQsgqXpsS2BrCxaDX', 'spotify:track:4p9B4qDXJPces7es9phYpL', 'spotify:track:2t8yVaLvJ0RenpXUIAC52d', 'spotify:track:4Iy73U3ZqfhF1cxPDRSMKp', 'spotify:track:4p55EkzkGnWmLYDiNXc14t', 'spotify:track:7eBqSVxrzQZtK2mmgRG6lC', 'spotify:track:2gQYziDV5cSTRSqr6akzi5', 'spotify:track:4GKHIuAyQBWSvrVxoej52H', 'spotify:track:5ZcMWSpUeUPvO87FkSZbJB', 'spotify:track:72AtN6oGC6LOAh2VKBE4Pp', 'spotify:track:4SSnFejRGlZikf02HLewEF', 'spotify:track:0Z1nbG2KOuRKntstSAkSox', 'spotify:track:4TWflhgevIGo448fWc6mQq', 'spotify:track:3S4oklai4vG5KIrV8jLqxx', 'spotify:track:3SMvKWD9uGhSpG31pfqdRZ', 'spotify:track:1O01cSag3DaCGneWQgPBL4', 'spotify:track:6ocbgoVGwYJhOv1GgI9NsF', 'spotify:track:1RagpNpkD3KcjXMLGMe99V', 'spotify:track:3k9vMJ09zyVP3N2pi8Yzj0', 'spotify:track:73BdaMyVemaOFzSG5x9Cnc', 'spotify:track:38nyi6J4H44dXpf0PE3bWE', 'spotify:track:6djNCvsOpseUl83uWqAl6A', 'spotify:track:4ZT9FnbFu1PaBfV3itxiqT', 'spotify:track:4n6TxUxKF7VBXZSRLGivAC', 'spotify:track:50a8bKqlwDEqeiEknrzkTO', 'spotify:track:43c3ALzQbyxtdZSDgYsNak', 'spotify:track:1q9jq5X5vwmewjOa2mHtQ1', 'spotify:track:3WyRgi8CzQnhzO0xw79tTS', 'spotify:track:0VB3YI0Dl6TT3C7mIbHTs4', 'spotify:track:4yXPaSzaHsplPx227STAZt', 'spotify:track:4c3NJ7q3w2xPHlEQMRLuwv', 'spotify:track:0t8N5Q079tiCbHec5o1pYf', 'spotify:track:0lOKsvuwUhu0a6ZEaviQ46', 'spotify:track:78k2sWMlmtICqojUaTgk9J', 'spotify:track:3mmpv5Tn2YJPimEK02Tk1H', 'spotify:track:03ThZweiBWFP8tOGsk6QMO', 'spotify:track:5y00XpGQyEZdcLeAaSEVab', 'spotify:track:4Mqc5mST2WfkJvBbOhh5tp', None, 'spotify:track:7cWh3ScxjhvasLI0CBRoZk', 'spotify:track:64PiOjYeHRjU5NNjXBGvdn', 'spotify:track:7AQim7LbvFVZJE3O8TYgf2', 'spotify:track:6y6jbcPG4Yn3Du4moXaenr', 'spotify:track:08T4lSobn8UP6PQc9qtTzT', 'spotify:track:7Cq27Qc3WRyQ3ddwVslpVZ', 'spotify:track:0NJp8GyCOWnQh71xKSPfuV', 'spotify:track:6f1dn2ECCotPvBlRXY2TUF', 'spotify:track:1vux5TJpXtc7tbjA1YODpp', 'spotify:track:4EnEGf9JzAJhF1XNY9DJcD', None, 'spotify:track:6GSkLS2y4ZnnZsuRAj975K', 'spotify:track:7HNhyjMiTMDDDJixTS0yn0', 'spotify:track:0naF7Nfqw4RNshl8XnLJYd', 'spotify:track:3fVIFpU3VdSEoR82DaYe79', 'spotify:track:2xbI8Vmyv3TkpTdywpPyNw', 'spotify:track:2u7mxWSeoqTXndK5e08jMp', 'spotify:track:0VM5jTYd03mpun6I554wJn', 'spotify:track:1AtJv3Zzf4DA9UfX822V6D', 'spotify:track:2gGyUF86bijvQyjcOcJxNw', 'spotify:track:3XiNC94b4Tq1xwv70sQJGN', 'spotify:track:40Zb4FZ6nS1Hj8RVfaLkCV', 'spotify:track:1urpZ07FiH8jtkHuXp3mQD', 'spotify:track:1IzMOUiBBEtTrKpKOzZqUJ', 'spotify:track:6tByydPskASjm9jTPkNQq0', 'spotify:track:4pCEIQ6wBVuaJdER5bALtO', 'spotify:track:3Dkj37f0j3th0ZqtbWxh2s', 'spotify:track:5bJ1DrEM4hNCafcDd1oxHx', 'spotify:track:0BN8fpOPq04txIG8VmxKOg', 'spotify:track:1oaV97SzklGWVLi9LdW4Hf', 'spotify:track:7rvyVWja33WG9R97oeJAjx', 'spotify:track:74o6w9lAFIftsIMEHGbj9E', None, 'spotify:track:23EdByOETnSWQJ6FkvhczF', 'spotify:track:7HmYLIt2XvQLBztTArXajg', 'spotify:track:1Rt12naT90Eb9S1SnigiNI', 'spotify:track:4sW5s98swC2DoppkMEZfQh', 'spotify:track:31sPCnzgurJnFNcvcgWNjq', 'spotify:track:2cDVjwAvLDTpDinoYmS9SC', 'spotify:track:4YAH2RzSQ78Oz8lqL9CS13', 'spotify:track:0fIdqrh7ewKtHgEvZNKhc5', 'spotify:track:6Ur6u4Ici7NYBiuGEEkNMP', 'spotify:track:4XwmdaPVSHsvxsuKS7HBdl', 'spotify:track:3VhGbMpUONRwUIvgFoF14b', 'spotify:track:0nbGhlmf3Fabs3oYI0A3ld', 'spotify:track:2hEWU8neZk6IXVtFA8h43k', 'spotify:track:2Yer0p7uB2lVBUAtANuuQp', 'spotify:track:6ow93HWBDNMdNRyOUiuig9', 'spotify:track:0gExPQoVl2WARVr6BBXlOu', 'spotify:track:12MSmLSGPWulxOPvYBy5Ss', 'spotify:track:6Js9pKLTyVw7xZQ1MIjkVo', 'spotify:track:0p0fmKwHHE5SVj5CZoSk8A', 'spotify:track:4jTiyLlOJVJj3mCr7yfPQD', 'spotify:track:2vBHkrdfGHlbraytUvDAS2', 'spotify:track:5OYv51THY5BrxUvO803NPM', 'spotify:track:6GiOnqCGSAlSFDJeE175If', 'spotify:track:0h7tCzQmg4g506wqqufDDo', 'spotify:track:1lOe9qE0vR9zwWQAOk6CoO', 'spotify:track:5lFDtgWsjRJu8fPOAyJIAK', 'spotify:track:3jGgA5TYsnCBFWulpdATa8', 'spotify:track:6XujyDupMstcvXN2wLjlCV', 'spotify:track:7Adzy6kc6H1Da4wBVZ1XLN', 'spotify:track:7r7zPZopz1jTACyec3sCfq', 'spotify:track:7G8UwvJwgslJV178akfeIf', 'spotify:track:2eAZfqOm4EnOF9VvN50Tyc', 'spotify:track:0dMmAvh8LRm7GTXht4bMlP', 'spotify:track:4prwtt8AJRz2Wfc9JOBTfp', 'spotify:track:5NqOsPI4rA9Bl6LcCftzI2', 'spotify:track:32P5hxyBJkRdN5Ws6uW3p9', 'spotify:track:0SsTkfOhM7e87trwjEqBQN', 'spotify:track:3HWzoMvoF3TQfYg4UPszDq', 'spotify:track:3p4WqtYWXEqO6iShUAZTAc', 'spotify:track:4aarlAfLKVCTxUDNgbwhjH', 'spotify:track:4O1uCappFiU3bisYUdUBWy', 'spotify:track:76pUKeKLQuxjFFfbXJ5dif', 'spotify:track:5H9wMglUZwqivHCDzElAbB', 'spotify:track:0iIUmsrVL2sgGnX33oDsC7', 'spotify:track:0iIUmsrVL2sgGnX33oDsC7', 'spotify:track:3wLtYwtqvKK2ewelSVPeDK', 'spotify:track:62GXGpd73vslqIBHq8XqOx', 'spotify:track:5MPPttjfGap2C6j6eKcO6J', 'spotify:track:1aZ0kGThRx0QpVnSDYzoIj', 'spotify:track:4cg1yakyRSIOjxKM2I7J1q', 'spotify:track:7GX5flRQZVHRAGd6B4TmDO', 'spotify:track:3A3hHhvB7PlwyTnesoLk8d', 'spotify:track:0CjHqLvr4EdjBJ0XiKtbCI', 'spotify:track:4FQaMaxFgIMX1Wg5wYKMRi', 'spotify:track:1ttPzkTSpQUFcEGx8bjerL', 'spotify:track:1P8EwM4FD6O5quWD4z244A', 'spotify:track:65U4ZKquvU2GG8sj95cT4Q', 'spotify:track:1mAey8kEPmDM2icL56kS9d', 'spotify:track:7DcvwMAiqKJQD1rrdfxSDx', 'spotify:track:4ESyocZUQ3fOlCbNP6n17i', 'spotify:track:1JG7Ff8K9RvlibHYUdMGfV', 'spotify:track:3LVcKphzONOdQ2EATazlZq', None, 'spotify:track:7HNhyjMiTMDDDJixTS0yn0', 'spotify:track:6Js9pKLTyVw7xZQ1MIjkVo', 'spotify:track:5ry2OE6R2zPQFDO85XkgRb', 'spotify:track:3e7Y6sfFlIdBMJhX7wpqVO', None, 'spotify:track:56prPhOQ8YcVNLK9UXn7Py', 'spotify:track:7uFhjRIFGqTq3oUZQGdUZn', 'spotify:track:1WIZiOuNO3woKfdlSK2gNn', 'spotify:track:5MPPttjfGap2C6j6eKcO6J', 'spotify:track:4NN6N5TxBO5k9uqu0W4gfQ', 'spotify:track:4sjiIpEv617LDXaidKioOI', 'spotify:track:6PX6pD70yamYHeqPSXpwiy', 'spotify:track:4guBZjUyrGoHsTahO3IHdj', 'spotify:track:1GeFOFZjBs91Dl9vXQSNOR', 'spotify:track:0t3ZvGKlmYmVsDzBJAXK8C', 'spotify:track:2pDRgHQDQczagSU4eOYdHs', 'spotify:track:2sz9tRQPAmiof09L8mctqO', 'spotify:track:4VXIryQMWpIdGgYR4TrjT1', 'spotify:track:3oDkdAySo1VQQG0ptV7uwa', 'spotify:track:1fCeXjoRExPP2qwSBh2aST', 'spotify:track:2DnyKpPcFpC460wLJeGzOs', None, 'spotify:track:4Cxzi7cQUXzPi3IvnQRATg', 'spotify:track:2bqIGBffiG9JdanfZbXFdd', 'spotify:track:1ef4EjRHd7Xuigewwumqlx', 'spotify:track:6B4KWBeFdHrpVezjTqggWr', 'spotify:track:76pUKeKLQuxjFFfbXJ5dif', None, 'spotify:track:1Faq8G2y56A8fRv7HsLq25', 'spotify:track:2zjGJ0dChMR0KxBZS15aqo', 'spotify:track:4xisLMFhYADhKnkOCCV4Am', 'spotify:track:2gQYziDV5cSTRSqr6akzi5', 'spotify:track:6qMXubogFdMrvVMJwqATzd', 'spotify:track:7bEKga8eFygrhFWB5KTl3A', 'spotify:track:7bEKga8eFygrhFWB5KTl3A', 'spotify:track:0Xek5rqai2jcOWCYWJfVCF', 'spotify:track:0djQjoHwIanhfOWxRVZU7v', 'spotify:track:1T5mVPJE6LilJ7f73L3UDo', 'spotify:track:5ytfVEp06PULLpWB6cEuza', 'spotify:track:4ve2uzqdwnHr20G5YgMMqr', 'spotify:track:2cYqizR4lgvp4Qu6IQ3qGN', 'spotify:track:2Grb4G6t9VIqo6moKUloom', 'spotify:track:0axBgt9y0GvMCLuRl2xBKG', 'spotify:track:4SWWe2OYC4mqf40Gc2RSdl', 'spotify:track:7mCQK9YB25WZw1saUjfL4e', 'spotify:track:6canmpFnLHVUzvVWAodifz', 'spotify:track:2Xide1dv5cttfILM7NxW41', 'spotify:track:0Jr4zQh5i3vrKFEcXrhhxl', 'spotify:track:0uxSUdBrJy9Un0EYoBowng', 'spotify:track:1GeNui6m825V8jP4uKiIaH', 'spotify:track:6XHVuErjQ4XNm6nDPVCxVX', 'spotify:track:4uhvMW7ly7tJil31YYscAN', 'spotify:track:01GmGxOPy22EdAZGC0X6q1', 'spotify:track:52ZbaOAZcVqFmFTMa8tGR9', 'spotify:track:7u9CKCgpGAm9UiSXQ70I46', 'spotify:track:4hbcs8vaamKTPevPIJsY7N', 'spotify:track:2ff1ba3VwxlELpB6zRzXP5', 'spotify:track:6YpvY4j6L80Kr4UHd85sWR', 'spotify:track:1CHhAINmT48RpXE5owAo3Q', 'spotify:track:3Uoy2lrZdhocMWO0jIdjAp', 'spotify:track:6MF4tRr5lU8qok8IKaFOBE', 'spotify:track:22ruOqBqBRiZDiXFud4OXa', 'spotify:track:3OEmAn79IyBRu5jJSFibtC', 'spotify:track:0yQmxfaNpo32lfjS8MwZQJ', 'spotify:track:2ky7vgodn1YedpeS00lUqt', 'spotify:track:1UPsDgO3nICDyGDGoJnGsZ', 'spotify:track:1BNvadXnbiSf3ZofMMdDYK', 'spotify:track:35qf6TTMuC9PNcYQVv90lR', 'spotify:track:577bk2RrBFYGMvRuE5Xmdh', 'spotify:track:44sYqNBttbXNxya33FJ3Dj', 'spotify:track:78p1rF7xx1snnaKxtUzBHn', 'spotify:track:1VXVS7GZN9yfbzaWcWq2eo', 'spotify:track:0MLi0xtqUGYzIDPHEc0SdT', 'spotify:track:52ZbaOAZcVqFmFTMa8tGR9', 'spotify:track:7e0o82uBiJZDdh0J6U3121', 'spotify:track:1AxBgbv1xJIVzoUfz3pOOW', 'spotify:track:3cuykPS9TJOWufYPvTUOTN', 'spotify:track:4LH1gsNA3wUS6QKkGZoJN8', None, 'spotify:track:0WoAkdHmgPmEXfiBox1flk', 'spotify:track:7jI9cnrZof9mRNpIsA7QQN', 'spotify:track:0FB5ILDICqwK6xj7W1RP9u', 'spotify:track:15NisPU0HnPVuyJwlnksPh', 'spotify:track:2QbGvQssb0VLLS4x5NOmyJ', 'spotify:track:11a6GzsfPoLY1bVw3IFeMs', 'spotify:track:5qDsijQM75KTdv3RtSPx91', 'spotify:track:6Ozh9Ok6h4Oi1wUSLtBseN', 'spotify:track:6tarvNiKnEjYMj1VZhlDqR', 'spotify:track:3QS9ZCtoSCJhmaJ7QNXSAS', 'spotify:track:3kW4z2pIj5VY5fLjBrMRL5', 'spotify:track:1GeNui6m825V8jP4uKiIaH', 'spotify:track:4XiGKQqbmnMVxDzUj6j3f2', 'spotify:track:6kzkaR1UEKP0XjlK4jFgC7', 'spotify:track:5XPo15e5ICs6NvSMn44pTF', 'spotify:track:176CHQCg8fvF0ETAEnQ6z0', 'spotify:track:4YAH2RzSQ78Oz8lqL9CS13', 'spotify:track:1ttPzkTSpQUFcEGx8bjerL', None, 'spotify:track:4vSoyDfL0uZyUoWu5NNNsQ', 'spotify:track:5Z8HZM6iQMhhqyPcCGY5g9', 'spotify:track:60lrmdGiAekchpMi6TZzWn', 'spotify:track:2gjPbUsttk6GqJOUAh9WzN', 'spotify:track:6klLvorLoo1sxvZcjJIY8I', 'spotify:track:6Gg1gjgKi2AK4e0qzsR7sd', 'spotify:track:3eekarcy7kvN4yt5ZFzltW', 'spotify:track:0W1ZfgXpC23RYQPDq7RM5I', 'spotify:track:1ipyiYqvds0wcaFDTW6N4X', 'spotify:track:2R2j9X1YjUmirjO2VMNiEJ', 'spotify:track:52ZbaOAZcVqFmFTMa8tGR9', 'spotify:track:5zd9TgduWbfFXwgnm3K3Rz', 'spotify:track:17GbCAyjyXNvFBAgXrwzvu', 'spotify:track:5R2rsbwCDXORX2tLfprRmM', 'spotify:track:1Z0cZI0UzNbP9L8MzzGxqf', 'spotify:track:6Xw3iWrQKgArwlRhVuU9CK', 'spotify:track:5nCg0pD9BpWouChvS8eMSO', 'spotify:track:1Z0cZI0UzNbP9L8MzzGxqf', 'spotify:track:7wsmIIm0xWmtP7TmACXkJn', 'spotify:track:2MPn5aXEKrRBP5hv8s0HVc', 'spotify:track:7bAtM2OD3Z04BgyIVD52uA', 'spotify:track:4PSoQ6VmxVhf5CgOacw7nZ', 'spotify:track:24RRqpStlW9SmjoV8PZvIF', 'spotify:track:0QfmQhr5npxuWQ4zzUDUhB', 'spotify:track:6KLgjOkfr1FzjOLXjcvV6u', 'spotify:track:4WiqqyHJLjwdyYI1aJD8HC', 'spotify:track:1gVCEnryJhkdQcuC0Kbvor', 'spotify:track:7IMwEtpAiJanqF6vQteZN2', 'spotify:track:4jMPZl0GrSFgbogJ0C6sNG', 'spotify:track:161otjvz4uq0emZV2VSamG', 'spotify:track:001cKCt7jEOzXjqgkn9DQf', None, 'spotify:track:4vSoyDfL0uZyUoWu5NNNsQ', 'spotify:track:44sYqNBttbXNxya33FJ3Dj', 'spotify:track:5Z8HZM6iQMhhqyPcCGY5g9', 'spotify:track:60lrmdGiAekchpMi6TZzWn', 'spotify:track:5ry2OE6R2zPQFDO85XkgRb', 'spotify:track:2gjPbUsttk6GqJOUAh9WzN', 'spotify:track:4GKHIuAyQBWSvrVxoej52H', 'spotify:track:0WoAkdHmgPmEXfiBox1flk', 'spotify:track:6klLvorLoo1sxvZcjJIY8I', 'spotify:track:3WyRgi8CzQnhzO0xw79tTS', 'spotify:track:6Gg1gjgKi2AK4e0qzsR7sd', 'spotify:track:2ky7vgodn1YedpeS00lUqt', 'spotify:track:2gwkD6igEhQbDQegRCcdoB', 'spotify:track:1GeNui6m825V8jP4uKiIaH', 'spotify:track:1oaV97SzklGWVLi9LdW4Hf', 'spotify:track:3eekarcy7kvN4yt5ZFzltW', 'spotify:track:6B4KWBeFdHrpVezjTqggWr', 'spotify:track:2FvD20Z8aoWIePi7PoN8sG', 'spotify:track:1ipyiYqvds0wcaFDTW6N4X', 'spotify:track:0BN8fpOPq04txIG8VmxKOg', 'spotify:track:1lOe9qE0vR9zwWQAOk6CoO', 'spotify:track:5MPPttjfGap2C6j6eKcO6J', 'spotify:track:0SsTkfOhM7e87trwjEqBQN', 'spotify:track:2R2j9X1YjUmirjO2VMNiEJ', None, 'spotify:track:4GKHIuAyQBWSvrVxoej52H', 'spotify:track:4SWWe2OYC4mqf40Gc2RSdl', 'spotify:track:4SDgTLDYrJ2UrHbkRkg7MD', 'spotify:track:6MF4tRr5lU8qok8IKaFOBE', 'spotify:track:6PRh0ilIMEP1xlUHqalnkD', 'spotify:track:6vWzkhoAp1SF4PEJ0iLKYQ', 'spotify:track:1ttPzkTSpQUFcEGx8bjerL', 'spotify:track:00ko9WaS4jOX1kEk3gvHjf', 'spotify:track:6Ozh9Ok6h4Oi1wUSLtBseN', 'spotify:track:5UGoVPvXZwrIruvmPwKf1v', 'spotify:track:2EkPlUHBlhqo8XaXQdUcmo', 'spotify:track:3JlIWg991WM3tlg8aOXEnq', 'spotify:track:1lUTmmPMAsxZBR2iK9CKDF', 'spotify:track:5CEqIyfuiSa1MTTUh8kr7f', 'spotify:track:3nS9a01VvXHQriLqJYwRqG', 'spotify:track:1kFkOkKYqDKm1nI9IrATOP', 'spotify:track:6Ss3OcXdhafmOEvMPRo6A6', 'spotify:track:34oWbFBfGEElvgO0a5c9V4', 'spotify:track:53VkV6QK8RXp00jeyyTNQH', 'spotify:track:01VNjvEAQklNZhZ4hjYWu8', 'spotify:track:51aEudqWnqb8PEihTAQKNS', 'spotify:track:0RLLvYBopDwooCyvnTwgYu', 'spotify:track:0mb3uDw5vfFUcZfJYFOMRu', 'spotify:track:42zd6DYQ4o4SECmTITrM1U', 'spotify:track:0LfP3MWgeR59DZF0i0aCAi', 'spotify:track:2xIwekw4vK5jo4r2L8MfCH', 'spotify:track:3lJ0OmRN1dQE4JXucRHDpA', 'spotify:track:01JMnRUs2YOK6DDpdQASGY', 'spotify:track:4A8cWXxKfIL3lAyUDzXbCF', None, 'spotify:track:10Gg3jkIcMJZvzG3VzPhkd']
-count = 0
-for id in test:
-    if id == None:
-        count += 1
 
-print(count)
+
 
 # TEST 1 (FUZZY GATE = 65, NONG = 68)
 # TEST 2 (FUZZY GATE = 10, NONG = 3)
-# TEST 3 )FUZZY GATE = 25, NONG = 12)
+# TEST 3 (FUZZY GATE = 25, NONG = 12)
+# TEST 4 (FUZZY GATE = 20, NONG = 6)
+
+# INTERESTING SONGS TO TEST: <FROM YT> (FROM SP):
+#region
+
+# MATCH FOUND FOR smokepurpp x murda beatz  123 official video BY lyrical lemonade
+# audi BY ['smokepurpp']
+# MATCH FOUND FOR smokepurpp x murda beatz  123 official video BY lyrical lemonade
+# what i please feat denzel curry BY ['smokepurpp', 'denzel curry']
+# MATCH FOUND FOR smokepurpp x murda beatz  123 official video BY lyrical lemonade
+# murda she wrote BY ['sleepy hallow']
+# final song title (sp): murda she wrote, song title (yt): smokepurpp x murda beatz  123 official video
+# final artist names (sp): ['sleepy hallow'], artist names (yt): lyrical lemonade
+# spotify:track:3lLT1GM0h5bJXv0lToc4zw
+
+# MATCH FOUND FOR euro gotit  posse ft lil baby official audio BY king euro gotit
+# ready feat gunna BY ['lil baby', 'gunna']
+# MATCH FOUND FOR euro gotit  posse ft lil baby official audio BY king euro gotit
+# 3 headed goat feat lil baby  polo g BY ['lil durk', 'lil baby', 'polo g']
+# final song title (sp): 3 headed goat feat lil baby  polo g, song title (yt): euro gotit  posse ft lil baby official audio
+# final artist names (sp): ['lil durk', 'lil baby', 'polo g'], artist names (yt): king euro gotit
+# spotify:track:6Tguhaf2uAe6OjRLsR2Tql
+
+# # err: NO MATCH FOUND FOR gun em down feat diego landlord  dame luchi BY dae dae  topic
+# # CLOSEST IS goons BY ['burna bandz']
+# # Press Enter to continue...
+# # err: NO MATCH FOUND FOR gun em down feat diego landlord  dame luchi BY dae dae  topic
+# # CLOSEST IS at the pot BY ['burna bandz']
+# # Press Enter to continue...
+# # err: NO MATCH FOUND FOR gun em down feat diego landlord  dame luchi BY dae dae  topic
+# # CLOSEST IS pop out BY ['burna bandz']
+# # Press Enter to continue...
+# # MATCH FOUND FOR gun em down feat diego landlord  dame luchi BY dae dae  topic
+# # your homie BY ['top5', 'drakeo the ruler', '6ixbuzz']
+
+# MATCH FOUND FOR 21 savage  asmr official audio BY 21 savage
+# asmr BY ['21 savage']
+# MATCH FOUND FOR 21 savage  asmr official audio BY 21 savage
+# cant leave without it BY ['21 savage']
+# MATCH FOUND FOR 21 savage  asmr official audio BY 21 savage
+# glock in my lap BY ['21 savage', 'metro boomin']
+# final song title (sp): glock in my lap, song title (yt): 21 savage  asmr official audio
+# final artist names (sp): ['21 savage', 'metro boomin'], artist names (yt): 21 savage
+# spotify:track:6pcywuOeGGWeOQzdUyti6k
+
+# MATCH FOUND FOR roddy ricch  hoodricch prod by bearonthebeat dir by skyyliinevisualz starring hoodricch BY roddy ricch
+# every season BY ['roddy ricch']
+# MATCH FOUND FOR roddy ricch  hoodricch prod by bearonthebeat dir by skyyliinevisualz starring hoodricch BY roddy ricch
+# ballin with roddy ricch BY ['mustard', 'roddy ricch']
+# MATCH FOUND FOR roddy ricch  hoodricch prod by bearonthebeat dir by skyyliinevisualz starring hoodricch BY roddy ricch
+# walk em down feat roddy ricch BY ['nle choppa', 'roddy ricch']
+# final song title (sp): walk em down feat roddy ricch, song title (yt): roddy ricch  hoodricch prod by bearonthebeat dir by skyyliinevisualz starring hoodricch
+# final artist names (sp): ['nle choppa', 'roddy ricch'], artist names (yt): roddy ricch
+# spotify:track:1Z0cZI0UzNbP9L8MzzGxqf
+
+# MATCH FOUND FOR tayk  bummer ft lil kolya official audio BY hip hop all star
+# all ten feat lil baby  sped up BY ['tay b', 'lil baby']
+# final song title (sp): all ten feat lil baby  sped up, song title (yt): tayk  bummer ft lil kolya official audio
+# final artist names (sp): ['tay b', 'lil baby'], artist names (yt): hip hop all star
+# spotify:track:4cL5m8Zzxk5CRmn5xLD2XY
+
+# MATCH FOUND FOR roddy ricch  ricch forever music video BY hip hoprb lyrics
+# every season BY ['roddy ricch']
+# MATCH FOUND FOR roddy ricch  ricch forever music video BY hip hoprb lyrics
+# ballin with roddy ricch BY ['mustard', 'roddy ricch']
+# final song title (sp): ballin with roddy ricch, song title (yt): roddy ricch  ricch forever music video
+# final artist names (sp): ['mustard', 'roddy ricch'], artist names (yt): hip hoprb lyrics
+# spotify:track:3QzAOrNlsabgbMwlZt7TAY
+#!!!DOESN'T EXIST ON SPOTIFY!!!
+
+#endregion
+
+str1 = ["broccoli", 
+        "waka feat a boogie wit da hoodie", 
+        "new patek", 
+        "rubiks intro", 
+        "rich  sad", 
+        "123", 
+        "balenciaga ft 21 savage", 
+        "glockwin feat bigwinnn", 
+        "posse", 
+        "gun em down feat diego landlord", 
+        "baby", 
+        "asmr", 
+        "hoodricch", 
+        "shenanigans feat yung bans", 
+        "at all cost", 
+        "bummer", 
+        "ricch forever", 
+        "joggers", 
+        "blow the pickle"]
+
+str2 = ["another late night (feat. lil yachty)", 
+        "keke", 
+        "patek", 
+        "crash bandicoot main theme", 
+        "cooped up with roddy ricch", 
+        "nephew feat lil pump", 
+        "cupid balenciaga",
+        "cash route", 
+        "gas gas gas", 
+        "goons", 
+        "fuk dat nia", 
+        "spin bout u", 
+        "every season", 
+        "eye 2 eye", 
+        "money", 
+        "fuk dat nia", 
+        "everywhere i go", 
+        "die young", 
+        "topic", 
+        "blow the whistle"]

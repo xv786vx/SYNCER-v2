@@ -22,60 +22,51 @@ class SpotifyProvider(Provider):
             scope="playlist-modify-private playlist-modify-public"   # You can adjust scope based on your needs
         ))
 
-
-    def search(self, track_name, artists):
-        query = f"{track_name} {artists}"
-
-        results = self.sp.search(q=query, limit=5, type='track')
-        if results['tracks']['items']:
-            for track in results['tracks']['items']:
-                song_title = track['name'].lower()
-                artist_names = [artist['name'].lower() for artist in track['artists']]
-                print(f"song title (sp): {song_title}, song title (yt): {track_name.lower()}")
-                print(f"artist names (sp): {artist_names}, artist names (yt): {artists}")
-
-                print((song_title in track_name.lower() or track_name.lower() in song_title))
-                print(any(track_name.lower() in artist_name or artist_name in track_name.lower() for artist_name in artist_names))
-                
-                
-                if (song_title in track_name.lower() or track_name.lower() in song_title) and (any(artist_name in artists.lower() or artists.lower() in artist_name for artist_name in artist_names) or 
-                                                                                               any(track_name.lower() in artist_name or artist_name in track_name.lower() for artist_name in artist_names)):
-                    print(track['uri'])
-                    return track['uri']
-                else:
-                    print("err: no match found")
-        else:
-            print("err: result didn't match given structure")
-            return None
-        
-    def searchv2(self, track_name, artists):
+    
+    def search_auto(self, track_name, artists):
         
         # clean inputs
-        track_name = clean_str(track_name)
-        artists = clean_str(artists)
+        # clean_track_name, artists = preprocess(track_name), preprocess(artists)
+        clean_track_name, artists = preprocess(track_name), preprocess(artists)
         
         query = f"{track_name} {artists}"
 
-        results = self.sp.search(q=query, limit=5, type='track')
+        results = self.sp.search(q=query, limit=6, type='track')
         if results['tracks']['items']:
+
+            best_match = ["", 0, 0, "", ""]
+
             for track in results['tracks']['items']:
-                song_title = clean_str(track['name'])
-                artist_names = [clean_str(artist['name']) for artist in track['artists']]
+                song_title = preprocess(track['name'])
+                artist_names = [preprocess(artist['name']) for artist in track['artists']]
+                
+                #region
+                track_names_match = max(fuzzy_matchv2(song_title, track_name), fuzzy_matchv2(song_title, clean_track_name))
+                artist_match = max(fuzzy_matchv2(artist_name, artists) for artist_name in artist_names)
                 
                 
-                track_names_match = fuzzy_match(song_title, track_name)
-                
-                
-                artist_match = (any(fuzzy_match(artist_name, artists) for artist_name in artist_names) or 
-                any(artist_name in track_name or track_name in artist_name for artist_name in artist_names))
-                
-                
-                if track_names_match and artist_match:
-                    return track['uri']
-                else:
-                    print("err: no match found")
+                if track_names_match >= best_match[1] and artist_match >= best_match[2]:
+                    print(f"MATCH FOUND FOR {track_name} BY {artists}")
+                    print(f"{song_title} BY {artist_names}")
+                    best_match[0] = track['uri']
+                    best_match[1] = track_names_match
+                    best_match[2] = artist_match
+                    best_match[3] = song_title
+                    best_match[4] = artist_names
+            
+            if best_match[1] > 65 and best_match[2] > 65:
+                print(f"final song title (sp): {best_match[3]}, song title (yt): {track_name.lower()}")
+                print(f"final artist names (sp): {best_match[4]}, artist names (yt): {artists}")
+                print("")
+                return best_match[0]
+            
+            else: 
+                print(f"The best match found for <{track_name}> by <{artists}> is <{best_match[3]}> by <{best_match[4]}>.")
+                input(f"Would you like to (1) Smart Sync, (2) manually search the song, or (3) skip? ")
+                return None
         else:
             print("err: result didn't match given structure")
+            input("Press Enter to continue...")
             return None
     
 
@@ -143,12 +134,25 @@ class SpotifyProvider(Provider):
         print(f"Created Spotify playlist: {playlist['name']} with ID: {playlist['id']}")
         return playlist
 
+    
 
 # HELPER FUNCTIONS FOR IMPROVING SPOTIFY SEARCH CAPABILITIES
-def fuzzy_match(str1, str2):
-    token_similarity = fuzz.token_set_ratio(str1, str2)
-    print(token_similarity)
-    return token_similarity > 25 or (str1 in str2 or str2 in str1)
 
-def clean_str(s):
-    return re.sub(r'[^a-zA-Z0-9\s]', '', s).strip().lower()
+def preprocess(text):
+    stopwords = {"official", "music", "video", "topic"}
+    # stopwords = {"feat", "featuring", "official", "music", "video", "topic"}
+    tokens = text.lower().split()
+    filtered_tokens = [token for token in tokens if token not in stopwords]
+    filtered_text = " ".join(filtered_tokens)
+    
+    final_text = re.sub(r'[^a-zA-Z0-9\s]', '', filtered_text)
+    
+    return final_text
+
+def fuzzy_matchv2(str1, str2):
+    ratio = fuzz.ratio(str1, str2)
+    partial_ratio = fuzz.partial_ratio(str1, str2)
+    
+    # Weighted combination for refined matching
+    return int(0.7 * ratio + 0.3 * partial_ratio)
+

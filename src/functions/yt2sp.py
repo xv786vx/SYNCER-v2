@@ -27,10 +27,9 @@ t_to_sync_sp = []
 for track in t_to_sync_yt:
     song = track['title']
     artists = track['artist']
-    print(f"Track URI added to list: {sp.searchv2(song, artists)}...")
-    t_to_sync_sp.append(sp.searchv2(song, artists))
-    print(f"len of songs to sync: {len(t_to_sync_sp)}")
-
-print(t_to_sync_sp)
+    # print(f"YT: {song}, {artists}")
+    # print(f"SP: {sp.searchv2(song, artists)[0]['name']}, {sp.searchv2(song, artists)[1]}...")
+    t_to_sync_sp.append(sp.search_auto(song, artists))
+    
 
 sp.add_to_playlist(sp.get_playlist_by_name(pl_info['title'])['id'], t_to_sync_sp)
