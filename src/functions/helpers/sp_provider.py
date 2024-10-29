@@ -24,7 +24,19 @@ class SpotifyProvider(Provider):
 
     
     def search_auto(self, track_name, artists) -> list:
-        
+        """algorithmically processes track_name and artists from YouTube to search for equivalent Spotify track.
+
+        Args:
+            track_name (string): the video title scraped from a given YouTube video.
+            artists (string): a single channel name scraped from a given YouTube video.
+
+        Returns:
+            list[]: returns a 
+                [song uri, track_name match score, artist match score, song title, artist names]
+            if a suitable match is found, else None.
+        """
+
+
         # clean inputs
         # print(f"old artists: {artists}")
         # clean_track_name, artists = preprocess(track_name), preprocess(artists)
@@ -74,6 +86,15 @@ class SpotifyProvider(Provider):
             return None
         
     def search_manual(self, track_name, artists):
+        """given a user's input, manually search for a track on Spotify.
+
+        Args:
+            track_name (string): a user's desired song title.
+            artists (string): a user's desired artist name (WIP INPUTTING MULTIPLE ARTISTS).
+
+        Returns:
+            str: returns ONLY the Spotify track uri if a suitable match is found, else None.
+        """
         clean_track_name, artists = preprocessv2(track_name), preprocessv2(artists)
         
         query = f"{clean_track_name} {artists}"
@@ -99,7 +120,11 @@ class SpotifyProvider(Provider):
     
 
     def get_playlists(self):
-        """Get user playlists."""
+        """Obtains a list of the user's Spotify playlists.
+
+        Returns:
+            list[]: a list containing the name, id, image, and uri of each playlist.
+        """
         playlists = self.sp.current_user_playlists()
         return [
             (
@@ -112,7 +137,14 @@ class SpotifyProvider(Provider):
     
 
     def get_playlist_by_name(self, playlist_name):
-        """Search and return a playlist by its name."""
+        """given a Spotify playlist name, return the playlist's information.
+
+        Args:
+            playlist_name (string): a playlist name to search for.
+
+        Returns:
+            dictionary: {'title': playlist name, 'id': playlist id, 'description': playlist description, 'image': playlist image}
+        """
         playlists = self.sp.current_user_playlists()
         for pl in playlists['items']:
             if pl['name'].lower() == playlist_name.lower():  # Case-insensitive comparison
@@ -125,7 +157,15 @@ class SpotifyProvider(Provider):
         return None  # Return None if playlist not found
     
 
-    def get_playlist_items(self, playlist_id):
+    def get_playlist_items(self, playlist_id) -> list:
+        """Given a Spotify playlist id, return the track titles and artists of each track in the playlist.
+
+        Args:
+            playlist_id (str): a valid Spotify playlist id.
+
+        Returns:
+            list[dict]: [{'title': track title, 'artist': track artist}, ...]
+        """
         playlist_items = self.sp.playlist_tracks(playlist_id)
         tracks_info = []
         for item in playlist_items['items']:
@@ -141,9 +181,16 @@ class SpotifyProvider(Provider):
         return tracks_info
 
 
-    def add_to_playlist(self, playlist_id, track_uri):
-        
-        """Add track to playlist."""
+    def add_to_playlist(self, playlist_id, track_uri) -> None:
+        """add a list of songs (through uri) to a Spotify playlist.
+
+        Args:
+            playlist_id (string): the playlist id corresponding to the playlist to add songs to.
+            track_uri (list[str]): a list of Spotify track uris to add to the playlist.
+
+        Returns:
+            None: only mutates the playlist.
+        """
         try:
             self.sp.playlist_add_items(playlist_id, track_uri)
             print('sigma')
@@ -154,20 +201,35 @@ class SpotifyProvider(Provider):
     
 
     def create_playlist(self, playlist_name):
+        """creates a Spotify playlist with the given name.
+
+        Args:
+            playlist_name (string): the desired playlist name.
+
+        Returns:
+            None?: only mutates the associated Spotify profile by making a playlist for them.
+        """
         playlist = self.sp.user_playlist_create(
             user=self.sp.current_user()['id'], 
             name=playlist_name, public=True, 
             description="made with SYNCER!"
         )
         print(f"Created Spotify playlist: {playlist['name']} with ID: {playlist['id']}")
-        return playlist
+        #return playlist
 
     
 
 # HELPER FUNCTIONS FOR IMPROVING SPOTIFY SEARCH CAPABILITIES
 
-#%%
 def preprocessv2(text):
+    """filters out stopwords and non-alphanumeric characters from a given string.
+
+    Args:
+        text (string): self-explanatory.
+
+    Returns:
+        string: the clean version of the given text.
+    """
     stopwords = {"feat", "featuring", "official", "music", "video", "audio", "topic", "ft", "wshh"}
     cleaned_text = re.sub(r'[^a-zA-Z0-9\s]', '', text.lower())
     tokens = cleaned_text.split()
@@ -177,8 +239,16 @@ def preprocessv2(text):
     
     return final_text
 
-#%%
-def preprocessv3(text, artists):
+def preprocessv3(song_title, artists):
+    """filters out stopwords and non-alphanumeric characters from a given string, and also filters out artist names from the song title that appear in artists as well.
+
+    Args:
+        text (string): a given song title
+        artists (string | list[string]): the artist(s) associated with the song title.
+
+    Returns:
+        string: the clean version of the given song title.
+    """
     stopwords = {"feat", "featuring", "official", "music", "video", "audio", "topic", "ft", "wshh"}
     
     # Ensure artists is a list of lowercase words
@@ -187,38 +257,36 @@ def preprocessv3(text, artists):
     else:
         artists = [artist.lower() for artist in artists]
 
-    # Combine stopwords and artist tokens
     all_stopwords = stopwords | set(artists)
-    
-    # Remove non-alphanumeric characters and lowercase
-    cleaned_text = re.sub(r'[^a-zA-Z0-9\s]', '', text.lower())
-    
-    # Tokenize and filter out stopwords and artist names
-    tokens = cleaned_text.split()
+    cleaned_song_title = re.sub(r'[^a-zA-Z0-9\s]', '', song_title.lower())
+    tokens = cleaned_song_title.split()
     filtered_tokens = [token for token in tokens if token not in all_stopwords]
-    
-    # Join tokens back into a single string
+
     final_text = " ".join(filtered_tokens)
     
     return final_text
 
-#%%
-def fuzzy_matchv2(str1, str2):
-    ratio = fuzz.ratio(str1, str2)
-    partial_ratio = fuzz.partial_ratio(str1, str2)
+#DELETE LATER??
+# def fuzzy_matchv2(str1, str2):
+#     ratio = fuzz.ratio(str1, str2)
+#     partial_ratio = fuzz.partial_ratio(str1, str2)
     
-    # Weighted combination for refined matching
-    return int(0.7 * ratio + 0.3 * partial_ratio)
-#%%
+#     # Weighted combination for refined matching
+#     return int(0.7 * ratio + 0.3 * partial_ratio)
+
 def fuzzy_matchv3(str1, str2):
+    """Calculates the similarity between two given strings using Levenshtein distances and tokenization.
+
+    Args:
+        str1 (string): self-explanatory.
+        str2 (string): self-explanatory.
+
+    Returns:
+        int: a ratio score between 0 and 100, indicating the similarity between the two strings.
+    """
     ratio = fuzz.ratio(str1, str2)
     partial_ratio = fuzz.partial_ratio(str1, str2)
     token_set_ratio = fuzz.token_set_ratio(str1, str2)
     
     # Weighted combination for refined matching, prioritizing token_set_ratio for artist mismatch tolerance
     return int(0.45 * ratio + 0.2 * partial_ratio + 0.35 * token_set_ratio)
-
-
-
-
-# %%

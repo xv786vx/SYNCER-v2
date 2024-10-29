@@ -63,7 +63,7 @@ class YoutubeProvider(Provider):
 
 
 
-    def search(self, song_title, artists):
+    def search_auto(self, song_title, artists):
         query = f"{song_title} {artists}"
         request = self.youtube.search().list(q=query, part="snippet", type="video", maxResults=7)
         response = request.execute()
