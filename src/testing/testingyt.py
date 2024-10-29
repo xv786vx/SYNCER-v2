@@ -1,6 +1,15 @@
 from functions.helpers.yt_provider import YoutubeProvider
 
 yt = YoutubeProvider()
+pl_id = "PLNEK6awsEHdszDF43-QRd8Re35pSFwUpG"
+test_id = yt.get_playlist_items(pl_id)[0]['id']
+print(test_id)
+
+yt.download_song(test_id)
+# for track in t_to_sync_yt:
+#     print(track['title'])
+#     print(track['artist'])
+#     print(track['id'])
 
 # works type shi
 # song = tracks_to_sync[0]['title']

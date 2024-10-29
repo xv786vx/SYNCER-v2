@@ -1,10 +1,11 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+
 from .provider import Provider
+from .provider import preprocessv2, preprocessv3, fuzzy_matchv3
+
 import os
 from dotenv import load_dotenv
-from fuzzywuzzy import fuzz
-import re
 
 load_dotenv()
 
@@ -27,15 +28,14 @@ class SpotifyProvider(Provider):
         """algorithmically processes track_name and artists from YouTube to search for equivalent Spotify track.
 
         Args:
-            track_name (string): the video title scraped from a given YouTube video.
-            artists (string): a single channel name scraped from a given YouTube video.
+            track_name (str): the video title scraped from a given YouTube video.
+            artists (str): a single channel name scraped from a given YouTube video.
 
         Returns:
             list[]: returns a 
                 [song uri, track_name match score, artist match score, song title, artist names]
             if a suitable match is found, else None.
         """
-
 
         # clean inputs
         # print(f"old artists: {artists}")
@@ -85,12 +85,13 @@ class SpotifyProvider(Provider):
             input("Press Enter to continue...")
             return None
         
-    def search_manual(self, track_name, artists):
+
+    def search_manual(self, track_name, artists) -> str:
         """given a user's input, manually search for a track on Spotify.
 
         Args:
-            track_name (string): a user's desired song title.
-            artists (string): a user's desired artist name (WIP INPUTTING MULTIPLE ARTISTS).
+            track_name (str): a user's desired song title.
+            artists (str): a user's desired artist name (WIP INPUTTING MULTIPLE ARTISTS).
 
         Returns:
             str: returns ONLY the Spotify track uri if a suitable match is found, else None.
@@ -140,7 +141,7 @@ class SpotifyProvider(Provider):
         """given a Spotify playlist name, return the playlist's information.
 
         Args:
-            playlist_name (string): a playlist name to search for.
+            playlist_name (str): a playlist name to search for.
 
         Returns:
             dictionary: {'title': playlist name, 'id': playlist id, 'description': playlist description, 'image': playlist image}
@@ -185,7 +186,7 @@ class SpotifyProvider(Provider):
         """add a list of songs (through uri) to a Spotify playlist.
 
         Args:
-            playlist_id (string): the playlist id corresponding to the playlist to add songs to.
+            playlist_id (str): the playlist id corresponding to the playlist to add songs to.
             track_uri (list[str]): a list of Spotify track uris to add to the playlist.
 
         Returns:
@@ -204,7 +205,7 @@ class SpotifyProvider(Provider):
         """creates a Spotify playlist with the given name.
 
         Args:
-            playlist_name (string): the desired playlist name.
+            playlist_name (str): the desired playlist name.
 
         Returns:
             None?: only mutates the associated Spotify profile by making a playlist for them.
@@ -216,77 +217,3 @@ class SpotifyProvider(Provider):
         )
         print(f"Created Spotify playlist: {playlist['name']} with ID: {playlist['id']}")
         #return playlist
-
-    
-
-# HELPER FUNCTIONS FOR IMPROVING SPOTIFY SEARCH CAPABILITIES
-
-def preprocessv2(text):
-    """filters out stopwords and non-alphanumeric characters from a given string.
-
-    Args:
-        text (string): self-explanatory.
-
-    Returns:
-        string: the clean version of the given text.
-    """
-    stopwords = {"feat", "featuring", "official", "music", "video", "audio", "topic", "ft", "wshh"}
-    cleaned_text = re.sub(r'[^a-zA-Z0-9\s]', '', text.lower())
-    tokens = cleaned_text.split()
-    filtered_tokens = [token for token in tokens if token not in stopwords]
-    
-    final_text = " ".join(filtered_tokens)
-    
-    return final_text
-
-def preprocessv3(song_title, artists):
-    """filters out stopwords and non-alphanumeric characters from a given string, and also filters out artist names from the song title that appear in artists as well.
-
-    Args:
-        text (string): a given song title
-        artists (string | list[string]): the artist(s) associated with the song title.
-
-    Returns:
-        string: the clean version of the given song title.
-    """
-    stopwords = {"feat", "featuring", "official", "music", "video", "audio", "topic", "ft", "wshh"}
-    
-    # Ensure artists is a list of lowercase words
-    if isinstance(artists, str):
-        artists = artists.lower().split()
-    else:
-        artists = [artist.lower() for artist in artists]
-
-    all_stopwords = stopwords | set(artists)
-    cleaned_song_title = re.sub(r'[^a-zA-Z0-9\s]', '', song_title.lower())
-    tokens = cleaned_song_title.split()
-    filtered_tokens = [token for token in tokens if token not in all_stopwords]
-
-    final_text = " ".join(filtered_tokens)
-    
-    return final_text
-
-#DELETE LATER??
-# def fuzzy_matchv2(str1, str2):
-#     ratio = fuzz.ratio(str1, str2)
-#     partial_ratio = fuzz.partial_ratio(str1, str2)
-    
-#     # Weighted combination for refined matching
-#     return int(0.7 * ratio + 0.3 * partial_ratio)
-
-def fuzzy_matchv3(str1, str2):
-    """Calculates the similarity between two given strings using Levenshtein distances and tokenization.
-
-    Args:
-        str1 (string): self-explanatory.
-        str2 (string): self-explanatory.
-
-    Returns:
-        int: a ratio score between 0 and 100, indicating the similarity between the two strings.
-    """
-    ratio = fuzz.ratio(str1, str2)
-    partial_ratio = fuzz.partial_ratio(str1, str2)
-    token_set_ratio = fuzz.token_set_ratio(str1, str2)
-    
-    # Weighted combination for refined matching, prioritizing token_set_ratio for artist mismatch tolerance
-    return int(0.45 * ratio + 0.2 * partial_ratio + 0.35 * token_set_ratio)

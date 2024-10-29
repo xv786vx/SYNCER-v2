@@ -16,3 +16,6 @@ token.json
 # spotify .cache that contains token 
 *.cache
 
+# songs downloaded
+downloads/
+

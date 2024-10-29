@@ -27,6 +27,7 @@ t_to_sync_sp = []
 for track in t_to_sync_yt:
     song = track['title']
     artists = track['artist']
+    video_id = track['id']
     # print(f"YT: {song}, {artists}")
     # print(f"SP: {sp.searchv2(song, artists)[0]['name']}, {sp.searchv2(song, artists)[1]}...")
     result = sp.search_auto(song, artists)
@@ -35,11 +36,20 @@ for track in t_to_sync_yt:
     else:
         print(f"A suitable match for <{song}> by <{artists}> was not found.")
         choice = int(input(f"Would you like to (1) Smart Sync (NOT IMPLEMENTED), (2) manually search the song, or (3) skip? "))
-        if choice == 2:
+        if choice == 1:
+            sp.add_to_playlist(sp.get_playlist_by_name(pl_info['title'])['id'], t_to_sync_sp)
+            t_to_sync_sp.clear()
+            yt.download_song(video_id)
+            print("The song has been downloaded to your Downloads folder!")
+            print(" Please add it to your local files on Spotify, then to the playlist you wish to sync before continuing.")
+            input("Press Enter to continue...")
+        
+        elif choice == 2:
             song = input("Enter the song title: ")
             artists = input("Enter the artist(s): ")
             result = sp.search_manual(song, artists)
             t_to_sync_sp.append(result)
+
         else:
             continue
                 

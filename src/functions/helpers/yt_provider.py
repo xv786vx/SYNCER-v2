@@ -3,9 +3,12 @@ from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.auth.exceptions import RefreshError
 from google.auth.transport.requests import Request
+import yt_dlp
+
 from .provider import Provider
+from .provider import preprocessv2, preprocessv3, fuzzy_matchv3
+
 import os
-import json
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -63,21 +66,83 @@ class YoutubeProvider(Provider):
 
 
 
-    def search_auto(self, song_title, artists):
-        query = f"{song_title} {artists}"
-        request = self.youtube.search().list(q=query, part="snippet", type="video", maxResults=7)
+    def search_auto(self, track_name, artists) -> list:
+
+        # clean inputs
+        # print(f"old artists: {artists}")
+        # clean_track_name, artists = preprocess(track_name), preprocess(artists)
+        clean_track_name, artists = preprocessv3(track_name, artists), preprocessv2(artists)
+        print(f"cleaned track name: {clean_track_name}")
+        # print(f"old track name: {track_name}")
+        print(f"new artists: {artists}")
+        print("")
+        
+        query = f"{clean_track_name} {artists}"
+
+        request = self.youtube.search().list(q=query, part="snippet", type="video", maxResults=6)
+        response = request.execute()
+        if response['items']:
+
+            best_match = ["", 0, 0, "", ""]
+
+            for item in response['items']:
+                artist_names = preprocessv2(item['snippet']['channelTitle'])
+                video_title = preprocessv3(item['snippet']['title'], artists)
+                
+                track_names_match = max(fuzzy_matchv3(video_title, track_name), fuzzy_matchv3(video_title, clean_track_name))
+                artist_match = fuzzy_matchv3(artist_names, artists)
+
+
+                # check if the video title or description contains the song title
+                if track_names_match >= best_match[1] and artist_match >= best_match[2]:
+                    print(f"MATCH FOUND FOR {track_name} BY {artists}")
+                    print(f"{video_title} BY {artist_names}")
+                    best_match[0] = item['id']['videoId']
+                    best_match[1] = track_names_match
+                    best_match[2] = artist_match
+                    best_match[3] = video_title
+                    best_match[4] = artist_names
+
+            if best_match[1] > 65 and best_match[2] > 65:
+                print(f"final song title (sp): {best_match[3]}, song title (yt): {track_name.lower()}")
+                print(f"final artist names (sp): {best_match[4]}, artist names (yt): {artists}")
+                print("")
+                return best_match
+            
+            else: 
+                print("no suitable match found.")
+                return None
+        else:
+            print("err: result didn't match given structure")
+            input("Press Enter to continue...")
+            return None
+
+        
+    def search_manual(self, track_name, artists) -> str:
+
+        clean_track_name, artists = preprocessv2(track_name), preprocessv2(artists)
+
+        query = f"{clean_track_name} {artists}"
+
+        request = self.youtube.search().list(q=query, part="snippet", type="video", maxResults=6)
         response = request.execute()
         if response['items']:
             for item in response['items']:
-                video_title = item['snippet']['title'].lower()
-                video_description = item['snippet']['description'].lower()
+                video_title = item['snippet']['title']
+                artist_names = item['snippet']['channelTitle']
                 
                 # check if the video title or description contains the song title
-                if (song_title.lower() in video_title or video_description) and (artists.lower() in video_title or video_description):
+                choice = input(f"Is this the song you were looking for? {video_title} by {artist_names} (y/n): ")
+                if choice == 'y':
                     return item['id']['videoId']
+                
+                else:
+                    continue
         else:
+            print("err: result didn't match given structure")
+            input("Press Enter to continue...")
             return None
-    
+
 
     def get_playlists(self):
         request = self.youtube.playlists().list(part="snippet", mine=True)
@@ -104,6 +169,7 @@ class YoutubeProvider(Provider):
                 }
         return None 
 
+
     def get_playlist_items(self, playlist_id):
         """get all items (videos) in playlist."""
         playlist_items = []
@@ -116,7 +182,7 @@ class YoutubeProvider(Provider):
             playlist_items.extend([
                 {
                     'title': item['snippet']['title'],
-                    # 'videoId': item['snippet']['resourceId']['videoId'],
+                    'id': item['snippet']['resourceId']['videoId'],
                     'artist': item['snippet']['videoOwnerChannelTitle']
                 }
                 for item in response['items']
@@ -143,6 +209,7 @@ class YoutubeProvider(Provider):
         )
         request.execute()
     
+
     def create_playlist(self, playlist_name):
         request = self.youtube.playlists().insert(
             part="snippet,status",
@@ -159,3 +226,27 @@ class YoutubeProvider(Provider):
         response = request.execute()
         print(f"Created YouTube playlist: {response['snippet']['title']} with ID: {response['id']}")
         return response
+    
+
+    def download_song(self, track_id):
+        video_url = f"https://www.youtube.com/watch?v={track_id}"
+
+        ydl_opts = {
+            'format': 'bestaudio[ext=mp4]',
+            'outtmpl': 'Downloads/%(title)s.%(ext)s',
+        }
+
+        yt_dlp.YoutubeDL(ydl_opts).download([video_url])
+
+
+    def download_playlist(self, playlist_id, playlist_name):
+        playlist_url = f"https://www.youtube.com/playlist?list={playlist_id}"
+        dl_folder = os.makedirs(os.path.join('Downloads', playlist_name), exist_ok=True)
+
+        ydl_opts = {
+            'format': 'bestaudio',
+            'outtmpl': os.path.join(dl_folder,'%(title)s.%(ext)s'),
+            'noplaylist': False,  # Make sure to download the whole playlist
+        }
+
+        yt_dlp.YoutubeDL(ydl_opts).download([playlist_url]) 
