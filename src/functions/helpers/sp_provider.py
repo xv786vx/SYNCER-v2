@@ -144,7 +144,7 @@ class SpotifyProvider(Provider):
             playlist_name (str): a playlist name to search for.
 
         Returns:
-            dictionary: {'title': playlist name, 'id': playlist id, 'description': playlist description, 'image': playlist image}
+            dict: {'title': playlist name, 'id': playlist id, 'description': playlist description, 'image': playlist image}
         """
         playlists = self.sp.current_user_playlists()
         for pl in playlists['items']:

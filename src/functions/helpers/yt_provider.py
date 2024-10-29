@@ -65,8 +65,18 @@ class YoutubeProvider(Provider):
         self.youtube = build('youtube', 'v3', credentials=credentials)
 
 
-
     def search_auto(self, track_name, artists) -> list:
+        """algorithmically processes track_name and artists from Spotify to search for equivalent Youtube video.
+
+        Args:
+            track_name (str): the song title scraped from a given Spotify track.
+            artists (str?): the artists scraped from a given Spotify track.
+
+        Returns:
+            list[]: returns a 
+                [video id, track_name match score, artist match score, video title, artist names]
+            if a suitable match is found, else None.
+        """
 
         # clean inputs
         # print(f"old artists: {artists}")
@@ -119,6 +129,15 @@ class YoutubeProvider(Provider):
 
         
     def search_manual(self, track_name, artists) -> str:
+        """given a user's input, manually search for a track on Youtube.
+
+        Args:
+            track_name (str): a user's desired song title.
+            artists (str): a user's dsired artist name (WIP INPUTTING MULTIPLE ARTISTS).
+
+        Returns:
+            str: returns ONLY the Youtube video id if a suitable match is found, else None.
+        """
 
         clean_track_name, artists = preprocessv2(track_name), preprocessv2(artists)
 
@@ -145,6 +164,11 @@ class YoutubeProvider(Provider):
 
 
     def get_playlists(self):
+        """Obtains a list of the user's Youtube playlists
+
+        Returns:
+            list[]: a list containing the name, id, description, and image of each playlist.
+        """
         request = self.youtube.playlists().list(part="snippet", mine=True)
         response = request.execute()
         return [
@@ -158,6 +182,14 @@ class YoutubeProvider(Provider):
     
 
     def get_playlist_by_name(self, playlist_name):
+        """given a Youtube playlist name, return the playlist's information.
+
+        Args:
+            playlist_name (str): a playlist name to search for.
+
+        Returns:
+            dict: {'title': playlist name, 'id': playlist id, 'description': playlist description, 'image': playlist image}
+        """
         playlists = self.get_playlists()
         for pl in playlists:
             if pl['title'].lower() == playlist_name.lower():  # Case-insensitive comparison
@@ -171,7 +203,14 @@ class YoutubeProvider(Provider):
 
 
     def get_playlist_items(self, playlist_id):
-        """get all items (videos) in playlist."""
+        """Given a Youtube playlist id, return the track's title, artists and id of each track in the playlist.
+
+        Args:
+            playlist_id (str): a valid Youtube playlist id.
+
+        Returns:
+           list[dict]: [{'title': track title, 'id': track id, 'artist': track artist}, ...]
+        """
         playlist_items = []
         request = self.youtube.playlistItems().list(part="snippet", playlistId=playlist_id, maxResults=25)
     
@@ -194,23 +233,41 @@ class YoutubeProvider(Provider):
         return playlist_items
     
 
-    def add_to_playlist(self, playlist_id, item_id):
-        request = self.youtube.playlistItems().insert(
-            part="snippet",
-            body={
-                "snippet": {
-                    "playlistId": playlist_id,
-                    "resourceId": {
-                        "kind": "youtube#video",
-                        "videoId": item_id
+    def add_to_playlist(self, playlist_id, item_ids) -> None:
+        """add a list of videos (through id) to a Youtube playlist.
+
+        Args:
+            playlist_id (str): the playlist id corresponding to the playlist to add videos to.
+            item_id (list[str]): a list of video ids to add to the playlist.
+
+        Returns:
+            None: only mutates the playlist.
+        """
+        for item_id in item_ids:
+            request = self.youtube.playlistItems().insert(
+                part="snippet",
+                body={
+                    "snippet": {
+                        "playlistId": playlist_id,
+                        "resourceId": {
+                            "kind": "youtube#video",
+                            "videoId": item_id
+                        }
                     }
                 }
-            }
-        )
-        request.execute()
+            )
+            request.execute()
     
 
     def create_playlist(self, playlist_name):
+        """creates a YouTube playlist with the given name.
+
+        Args:
+            playlist_name (str): the desired playlist name.
+
+        Returns:
+            None?: only mutates the associated YouTube profile by making a playlist for them.
+        """
         request = self.youtube.playlists().insert(
             part="snippet,status",
             body={
@@ -229,10 +286,21 @@ class YoutubeProvider(Provider):
     
 
     def download_song(self, track_id):
+        """YT_PROVIDER EXCLUSIVE. Downloads a song from Youtube given a video id.
+            ***FFMPEG IS REQUIRED FOR INSTALLATION, WORKING ON BUNDLING THIS INTO THE PACKAGE***
+
+        Args:
+            track_id (str): a track id corresponding to a Youtube video.
+        """
         video_url = f"https://www.youtube.com/watch?v={track_id}"
 
         ydl_opts = {
             'format': 'bestaudio[ext=mp4]',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
             'outtmpl': 'Downloads/%(title)s.%(ext)s',
         }
 
@@ -240,11 +308,23 @@ class YoutubeProvider(Provider):
 
 
     def download_playlist(self, playlist_id, playlist_name):
+        """YT_PROVIDER EXCLUSIVE. Downloads a playlist from Youtube given a video id.
+            ***FFMPEG IS REQUIRED FOR INSTALLATION, WORKING ON BUNDLING THIS INTO THE PACKAGE***
+
+        Args:
+            playlist_id (str): a playlist id corresponding to a Youtube playlist.
+            playlist_name (str): the name of the playlist to download to.
+        """
         playlist_url = f"https://www.youtube.com/playlist?list={playlist_id}"
-        dl_folder = os.makedirs(os.path.join('Downloads', playlist_name), exist_ok=True)
+        dl_folder = os.makedirs(os.path.join('Downloads', f"{playlist_name}_from_SYNCER"), exist_ok=True)
 
         ydl_opts = {
             'format': 'bestaudio',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
             'outtmpl': os.path.join(dl_folder,'%(title)s.%(ext)s'),
             'noplaylist': False,  # Make sure to download the whole playlist
         }
