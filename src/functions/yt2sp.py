@@ -29,7 +29,19 @@ for track in t_to_sync_yt:
     artists = track['artist']
     # print(f"YT: {song}, {artists}")
     # print(f"SP: {sp.searchv2(song, artists)[0]['name']}, {sp.searchv2(song, artists)[1]}...")
-    t_to_sync_sp.append(sp.search_auto(song, artists))
+    result = sp.search_auto(song, artists)
+    if result is not None:
+        t_to_sync_sp.append(result[0])
+    else:
+        print(f"A suitable match for <{song}> by <{artists}> was not found.")
+        choice = int(input(f"Would you like to (1) Smart Sync (NOT IMPLEMENTED), (2) manually search the song, or (3) skip? "))
+        if choice == 2:
+            song = input("Enter the song title: ")
+            artists = input("Enter the artist(s): ")
+            result = sp.search_manual(song, artists)
+            t_to_sync_sp.append(result)
+        else:
+            continue
+                
     
-
 sp.add_to_playlist(sp.get_playlist_by_name(pl_info['title'])['id'], t_to_sync_sp)

@@ -2,15 +2,15 @@ from functions.helpers.sp_provider import SpotifyProvider
 
 sp = SpotifyProvider()
 
-track_name = "smokepurpp x murda beatz 123 official video"
-artists = "lyrical lemonade"
+track_name = "jasiah yung bans shenanigans exclusive"
+artists = "worldstarhiphop"
 
 results = sp.search_auto(track_name, artists)
 
 # spotify:track:3lLT1GM0h5bJXv0lToc4zw
 
 
-
+# jasiah yung bans shenanigans wshh exclusive 
 
 
 

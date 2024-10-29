@@ -1,5 +1,5 @@
 class Provider:
-    def search(self, query):
+    def search_auto(self, query):
         """Search for tracks or videos."""
         raise NotImplementedError("Subclasses should implement this!")
 

@@ -23,13 +23,18 @@ class SpotifyProvider(Provider):
         ))
 
     
-    def search_auto(self, track_name, artists):
+    def search_auto(self, track_name, artists) -> list:
         
         # clean inputs
+        # print(f"old artists: {artists}")
         # clean_track_name, artists = preprocess(track_name), preprocess(artists)
-        clean_track_name, artists = preprocess(track_name), preprocess(artists)
+        clean_track_name, artists = preprocessv3(track_name, artists), preprocessv2(artists)
+        print(f"cleaned track name: {clean_track_name}")
+        # print(f"old track name: {track_name}")
+        print(f"new artists: {artists}")
+        print("")
         
-        query = f"{track_name} {artists}"
+        query = f"{clean_track_name} {artists}"
 
         results = self.sp.search(q=query, limit=6, type='track')
         if results['tracks']['items']:
@@ -37,12 +42,12 @@ class SpotifyProvider(Provider):
             best_match = ["", 0, 0, "", ""]
 
             for track in results['tracks']['items']:
-                song_title = preprocess(track['name'])
-                artist_names = [preprocess(artist['name']) for artist in track['artists']]
+                artist_names = [preprocessv2(artist['name']) for artist in track['artists']]
+                song_title = preprocessv3(track['name'], artist_names)
                 
                 #region
-                track_names_match = max(fuzzy_matchv2(song_title, track_name), fuzzy_matchv2(song_title, clean_track_name))
-                artist_match = max(fuzzy_matchv2(artist_name, artists) for artist_name in artist_names)
+                track_names_match = max(fuzzy_matchv3(song_title, track_name), fuzzy_matchv3(song_title, clean_track_name))
+                artist_match = max(fuzzy_matchv3(artist_name, artists) for artist_name in artist_names)
                 
                 
                 if track_names_match >= best_match[1] and artist_match >= best_match[2]:
@@ -58,12 +63,35 @@ class SpotifyProvider(Provider):
                 print(f"final song title (sp): {best_match[3]}, song title (yt): {track_name.lower()}")
                 print(f"final artist names (sp): {best_match[4]}, artist names (yt): {artists}")
                 print("")
-                return best_match[0]
+                return best_match
             
             else: 
-                print(f"The best match found for <{track_name}> by <{artists}> is <{best_match[3]}> by <{best_match[4]}>.")
-                input(f"Would you like to (1) Smart Sync, (2) manually search the song, or (3) skip? ")
+                print("no suitable match found.")
                 return None
+        else:
+            print("err: result didn't match given structure")
+            input("Press Enter to continue...")
+            return None
+        
+    def search_manual(self, track_name, artists):
+        clean_track_name, artists = preprocessv2(track_name), preprocessv2(artists)
+        
+        query = f"{clean_track_name} {artists}"
+
+        results = self.sp.search(q=query, limit=6, type='track')
+        if results['tracks']['items']:
+
+            for track in results['tracks']['items']:
+                song_title = track['name']
+                artist_names = [artist['name'] for artist in track['artists']]
+
+                choice = input(f"Is this the song you were looking for? {song_title} by {artist_names} (y/n): ")
+                if choice == 'y':
+                    return track['uri']
+                
+                else:
+                    continue
+
         else:
             print("err: result didn't match given structure")
             input("Press Enter to continue...")
@@ -138,21 +166,59 @@ class SpotifyProvider(Provider):
 
 # HELPER FUNCTIONS FOR IMPROVING SPOTIFY SEARCH CAPABILITIES
 
-def preprocess(text):
-    stopwords = {"official", "music", "video", "topic"}
-    # stopwords = {"feat", "featuring", "official", "music", "video", "topic"}
-    tokens = text.lower().split()
+#%%
+def preprocessv2(text):
+    stopwords = {"feat", "featuring", "official", "music", "video", "audio", "topic", "ft", "wshh"}
+    cleaned_text = re.sub(r'[^a-zA-Z0-9\s]', '', text.lower())
+    tokens = cleaned_text.split()
     filtered_tokens = [token for token in tokens if token not in stopwords]
-    filtered_text = " ".join(filtered_tokens)
     
-    final_text = re.sub(r'[^a-zA-Z0-9\s]', '', filtered_text)
+    final_text = " ".join(filtered_tokens)
     
     return final_text
 
+#%%
+def preprocessv3(text, artists):
+    stopwords = {"feat", "featuring", "official", "music", "video", "audio", "topic", "ft", "wshh"}
+    
+    # Ensure artists is a list of lowercase words
+    if isinstance(artists, str):
+        artists = artists.lower().split()
+    else:
+        artists = [artist.lower() for artist in artists]
+
+    # Combine stopwords and artist tokens
+    all_stopwords = stopwords | set(artists)
+    
+    # Remove non-alphanumeric characters and lowercase
+    cleaned_text = re.sub(r'[^a-zA-Z0-9\s]', '', text.lower())
+    
+    # Tokenize and filter out stopwords and artist names
+    tokens = cleaned_text.split()
+    filtered_tokens = [token for token in tokens if token not in all_stopwords]
+    
+    # Join tokens back into a single string
+    final_text = " ".join(filtered_tokens)
+    
+    return final_text
+
+#%%
 def fuzzy_matchv2(str1, str2):
     ratio = fuzz.ratio(str1, str2)
     partial_ratio = fuzz.partial_ratio(str1, str2)
     
     # Weighted combination for refined matching
     return int(0.7 * ratio + 0.3 * partial_ratio)
+#%%
+def fuzzy_matchv3(str1, str2):
+    ratio = fuzz.ratio(str1, str2)
+    partial_ratio = fuzz.partial_ratio(str1, str2)
+    token_set_ratio = fuzz.token_set_ratio(str1, str2)
+    
+    # Weighted combination for refined matching, prioritizing token_set_ratio for artist mismatch tolerance
+    return int(0.45 * ratio + 0.2 * partial_ratio + 0.35 * token_set_ratio)
 
+
+
+
+# %%
